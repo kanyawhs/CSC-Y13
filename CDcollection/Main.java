@@ -8,9 +8,10 @@
  * addCD() also still not proper created
  *
  * @author Kanya Farley
- * @version 06/03/2026
+ * @version 9/03/2026
  */
 import java.util.Scanner;
+import java.util.ArrayList;
 public class Main
 {
     // instance variables
@@ -35,12 +36,14 @@ public class Main
                 int releaseYear = kb.nextInt();
                 System.out.println("What's the run time (in seconds) for " + albumName + " (" + releaseYear + ") by " + artistName + "?");
                 int runTime = kb.nextInt();
+                kb.nextLine();
+                
                 CD tempCD = new CD(artistName, albumName, releaseYear, runTime);
                 archive.addCD(tempCD);
             } else if (userInput.equals("no") || userInput.equals("No") || userInput.equals("NO")) {
                 System.out.println("Okay! Here are all the albums you've entered: ");
-                albums.displayAll();
-                albums.saveToFile();
+                archive.displayAll();
+                archive.saveToFile(" ");
                 active = false;
             }
             

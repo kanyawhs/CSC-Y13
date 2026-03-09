@@ -6,7 +6,7 @@
  * Don't know how to call method to add CD to array list
  *
  * @author Kanya Farley
- * @version 06/03/2026
+ * @version 9/03/2026
  */
 import java.util.ArrayList;
 import java.io.IOException;
@@ -29,7 +29,10 @@ public class CDArchive
         try {
             FileWriter writer = new FileWriter(myFile);
             for (CD thisCD : albums) {
-                writer.write(thisCD.getArtistName() + ", " + thisCD.getAlbumName() + ", " + thisCD.getReleaseYear() + ", " + thisCD.getRunTime());
+                writer.write(thisCD.getArtistName() + ", " +
+                thisCD.getAlbumName() + ", " +
+                thisCD.getReleaseYear() + ", " +
+                thisCD.getRunTime() + "\n");
             }
             writer.flush();
             writer.close();
@@ -57,7 +60,8 @@ public class CDArchive
     
     void displayAll() {
         for (CD currentCD: albums) {
-            currentCD.toString();
+            //currentCD.toString();
+            System.out.println(currentCD.toString());
         }
     }
 }

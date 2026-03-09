@@ -42,11 +42,11 @@ public class CD
     }
     
     public int getRunTime() {
-        return(this.releaseYear);
+        return(this.runTime);
     }
     
     public String toString() {
-        String CDinfo = ("Artist name : " + this.artistName + ", Album name: " + ", release year: " + releaseYear + ", run time in seconds: " + runTime);
+        String CDinfo = ("Artist name : " + this.artistName + ", Album name: " + this.albumName + ", release year: " + this.releaseYear + ", run time in seconds: " + this.runTime);
         return(CDinfo);
     }
 }
