@@ -25,11 +25,13 @@ public class main
         System.out.println("4 : Deposit into account");
         System.out.println("5 : Withdraw from account");
         String userAction = kb.nextLine();
-        
+
         if (userAction.equals("1")) {
             createAccount();
         } else if (userAction.equals("2")) {
-            
+            closeAccount();
+        } else if (userAction.equals("3")) {
+            checkAccount();
         } else {
             String regex = ("1|2|3|4|5");
             while (!userAction.matches(regex) && userAction.length() > 1) { // ensures user hasn't entered an option and can matche no more than 1 character
@@ -59,24 +61,23 @@ public class main
         // defines account number based on type
         accountType = accountType.toLowerCase();
         String accountNumberType = " ";
-        while (accountNumberType.equals(" ")) {
-            if (accountType.equals("everyday")) {
-                accountNumberType = "-02";
-            } else if (accountType.equals("savings") || accountType.equals("current")) {
-                accountNumberType = "-00";
-            } else {
+        if (accountType.equals("everyday")) {
+            accountNumberType = "-02";
+        } else if (accountType.equals("savings") || accountType.equals("current")) {
+            accountNumberType = "-00";
+        } else {
+            while (accountNumberType.equals(" ")) {
                 System.out.println("Input invalid. Try entering 'Everyday', 'Savings', or 'Current'");
                 accountType = kb.nextLine();
             }
         }
-        
+
         // generates random 6 digit number for account
         Random random = new Random();
-        int [] randomAccountNumber = new int[6];
-        for (int i = 0; i <= 5; i++) {
-            randomAccountNumber[i] =+ random.nextInt();
-        }
-        
+        int min = 100000;
+        int max = 999999;
+        int randomAccountNumber = random.nextInt((max - min) + 1) + min;
+
         String accountNumber = "08-0101-0" + randomAccountNumber + accountNumberType;
 
         System.out.print("Enter amount to deposit: $");
@@ -84,12 +85,32 @@ public class main
 
         Account newAccount = new Account(customerName, accountNumber, customerAddress, accountType, currentBalance);
         System.out.println(customerName + ", " + accountNumber + ", " + customerAddress + ", " + accountType + ", " + "$" + currentBalance);
+        accounts.toString();
         accounts.addAccount(newAccount);
         System.out.println("Account added to list: ");
         accounts.displayAll();
         accounts.saveToFile(" ");
     }
-    
-    
-    
+
+    public void closeAccount() {
+        System.out.println("Current accounts: ");
+        accounts.displayAll();
+        System.out.println("Enter account number you wish to close (*Note, enter '-' characters with it: ");
+        String accountNumber = kb.nextLine();
+        /*for (String currentAccounts : accounts.toString()) { // not sure what to put or if
+        if (accountNumber == accounts.getAccountNumber()) {
+
+        }
+        }*/
+    }
+
+    public void checkAccount() {
+        System.out.println("Current accounts: ");
+        accounts.displayAll();
+    }
+
+    public void depositToAccount() {
+
+    }
+
 }
