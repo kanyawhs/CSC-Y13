@@ -46,8 +46,8 @@ public class Account
     }
     
     public String toString() {
-        String accountInfo = ("Customer Name: " + this.customerName +", Account Number: " + this.accountNumber + ", Customer Address: " +
-        this.customerAddress + ", Account Type: " + this.accountType + ", Current Balance: " + currentBalance);
+        String accountInfo = ("Customer Name: " + this.customerName +"; Account Number: " + this.accountNumber + "; Customer Address: " +
+        this.customerAddress + "; Account Type: " + this.accountType + "; Current Balance: " + currentBalance);
         return(accountInfo);
     }
 }

@@ -1,9 +1,13 @@
 
 /**
  * Creates and manages accounts
+ * 
+ * Current errors
+ * Can't access empty arraylist (since it's initialized here)
+ * Program gets confused about amount of items in accountarchive? txt file is fine
  *
  * @author Kanya Farley
- * @version 2 20/03
+ * @version 2 26/03
  */
 import java.util.Scanner;
 import java.util.Random;
@@ -12,11 +16,17 @@ public class main
 {
     Scanner kb = new Scanner(System.in);
     AccountArchive accounts = new AccountArchive();
+    ArrayList<Account> accountss = new ArrayList<Account>(); // doesnt work because new arraylist is made every time?
+    final double EVERYDAY_SAVINGS_MIN = 0;
+    final double CURRENT_MIN = -1000;
+    final double MAX_WITHDRAWAL = 5000;
+
     /**
      * Constructor for objects of class main
      */
     public main()
     {
+        accounts.loadFromFile();
         System.out.println("Welcome to Kawaii-Bank account management! What would you like to do? (Enter number for option)");
 
         System.out.println("1 : Create a new account");
@@ -46,6 +56,7 @@ public class main
      */
 
     public void createAccount () {
+        accounts.loadFromFile();
         System.out.print("Enter customer name for new account: ");
         String customerName = kb.nextLine();
         System.out.println();
@@ -59,14 +70,14 @@ public class main
         System.out.println();
 
         // defines account number based on type
-        accountType = accountType.toLowerCase();
         String accountNumberType = " ";
-        if (accountType.equals("everyday")) {
-            accountNumberType = "-02";
-        } else if (accountType.equals("savings") || accountType.equals("current")) {
-            accountNumberType = "-00";
-        } else {
-            while (accountNumberType.equals(" ")) {
+        while (accountNumberType.equals(" ")) {
+            accountType = accountType.toLowerCase();
+            if (accountType.equals("everyday")) {
+                accountNumberType = "-02";
+            } else if (accountType.equals("savings") || accountType.equals("current")) {
+                accountNumberType = "-00";
+            } else {
                 System.out.println("Input invalid. Try entering 'Everyday', 'Savings', or 'Current'");
                 accountType = kb.nextLine();
             }
@@ -77,15 +88,16 @@ public class main
         int min = 100000;
         int max = 999999;
         int randomAccountNumber = random.nextInt((max - min) + 1) + min;
-
         String accountNumber = "08-0101-0" + randomAccountNumber + accountNumberType;
 
         System.out.print("Enter amount to deposit: $");
         double currentBalance = kb.nextDouble();
-
+        
+        // creating object, verifying, and saving
         Account newAccount = new Account(customerName, accountNumber, customerAddress, accountType, currentBalance);
-        System.out.println(customerName + ", " + accountNumber + ", " + customerAddress + ", " + accountType + ", " + "$" + currentBalance);
+        System.out.println(customerName + "; " + accountNumber + "; " + customerAddress + "; " + accountType + "; " + "$" + currentBalance);
         accounts.toString();
+        accountss.add(newAccount);
         accounts.addAccount(newAccount);
         System.out.println("Account added to list: ");
         accounts.displayAll();
@@ -93,17 +105,37 @@ public class main
     }
 
     public void closeAccount() {
+        accounts.loadFromFile();
         System.out.println("Current accounts: ");
         accounts.displayAll();
-        System.out.println("Enter account number you wish to close (*Note, enter '-' characters with it: ");
+        System.out.println("Enter account number you wish to close (Note: Enter '-' characters with numbers):");
         String accountNumber = kb.nextLine();
-        /*for (String currentAccounts : accounts.toString()) { // not sure what to put or if
-        if (accountNumber == accounts.getAccountNumber()) {
-
+        
+        // would rather do the following without an arraylist :'(
+        for (Account thisAccount : accountss) { // isn't even accessed!!!!!!!!!
+            System.out.println("inside for loop"); // debugging
+            if (accountNumber.equals(thisAccount.getAccountNumber())) {
+                System.out.println(thisAccount.getCustomerName() + " " + thisAccount.getAccountType() + "/n is the account you're looking for.");
+                System.out.println("It currently has a balance of $" + thisAccount.getCurrentBalance());
+                System.out.println("Would you like to delete it? Enter 'yes' or 'no'");
+                String userInput = kb.nextLine();
+                userInput.toLowerCase();
+                if (userInput.equals("yes")) {
+                    System.out.println("Deleting account...");
+                    accountss.remove(thisAccount); // removes from this classes arraylist
+                    accounts.removeAccount(thisAccount); // removes from archive
+                } else if (userInput.equals("no")) {
+                    System.out.println("Operation cancelled.");
+                } else {
+                    System.out.println("Sorry, I don't understand.");
+                }
+            } else {
+                System.out.println("Sorry, that does not match any accounts in our records.");
+            } 
         }
-        }*/
-    }
 
+    }
+    
     public void checkAccount() {
         System.out.println("Current accounts: ");
         accounts.displayAll();
