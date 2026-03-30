@@ -1,0 +1,15 @@
+#BlueJ class context
+comment0.target=main
+comment1.params=
+comment1.target=main()
+comment1.text=\r\n\ Constructor\ for\ objects\ of\ class\ main\r\n
+comment2.params=
+comment2.target=void\ createAccount()
+comment2.text=\r\n\ Asks\ for\ account\ information\ (customer\ name,\ address,\ account\ type)\ and\ provides\ an\ account\ number\r\n
+comment3.params=
+comment3.target=void\ closeAccount()
+comment4.params=
+comment4.target=void\ checkAccount()
+comment5.params=
+comment5.target=void\ depositToAccount()
+numComments=6

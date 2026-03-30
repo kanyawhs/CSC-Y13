@@ -3,11 +3,10 @@
  * Creates and manages accounts
  * 
  * Current errors
- * Can't access empty arraylist (since it's initialized here)
  * Program gets confused about amount of items in accountarchive? txt file is fine
  *
  * @author Kanya Farley
- * @version 30/03
+ * @version 31/03
  */
 import java.util.Scanner;
 import java.util.Random;
@@ -55,7 +54,6 @@ public class main
      */
 
     public void createAccount () {
-        accounts.loadFromFile();
         System.out.print("Enter customer name for new account: ");
         String customerName = kb.nextLine();
         System.out.println();
@@ -115,7 +113,6 @@ public class main
     }
 
     public void closeAccount() {
-        accounts.loadFromFile();
         System.out.println("Current accounts: ");
         accounts.displayAll();
         System.out.println("Enter account number you wish to close (Note: Enter '-' characters with numbers):");

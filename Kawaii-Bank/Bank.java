@@ -1,9 +1,13 @@
 
 /**
  * Saves and stores accounts
+ * 
+ * Current problems:
+ * 
+ * closeAccount method's loop is flawed
  *
  * @author Kanya Farley
- * @version 30/03
+ * @version 31/03
  */
 import java.util.ArrayList;
 import java.io.IOException;
@@ -41,6 +45,7 @@ public class Bank
     }
     
     void loadFromFile () {
+        accounts.clear(); // avoids loading extra each time file is loaded?
         try {
             File file = new File("Accounts.txt");
             Scanner read = new Scanner(file);
@@ -64,26 +69,29 @@ public class Bank
     
     void closeAccount(String accountNumber) {
         Scanner kb = new Scanner(System.in);
-        for (Account thisAccount : accounts) {
-            System.out.println("inside for loop"); // debugging
+        ArrayList<Account> tempAccounts = new ArrayList<>(accounts); // to avoid concurrent modification
+        boolean found = false;
+        for (Account thisAccount : tempAccounts) {
             if (accountNumber.equals(thisAccount.getAccountNumber())) {
+                found = true;
                 System.out.println(thisAccount.getCustomerName() + " " + thisAccount.getAccountType() + " is the account you're looking for.");
                 System.out.println("It currently has a balance of $" + thisAccount.getCurrentBalance());
                 System.out.println("Would you like to delete it? Enter 'yes' or 'no'");
                 String userInput = kb.nextLine();
-                userInput.toLowerCase();
+                userInput = userInput.toLowerCase();
                 if (userInput.equals("yes")) {
-                    System.out.println("Deleting account...");
-                    accounts.remove(thisAccount); // removes from this classes arraylist
                     this.removeAccount(thisAccount); // removes from archive
+                    System.out.println("Account " + thisAccount.getAccountNumber() + " deleted!");
+                    this.saveToFile(" "); // changes are saved
                 } else if (userInput.equals("no")) {
                     System.out.println("Operation cancelled.");
                 } else {
                     System.out.println("Sorry, I don't understand.");
                 }
-            } else {
-                System.out.println("Sorry, that does not match any accounts in our records.");
-            } 
+            }
+        }
+        if (!found) {
+            System.out.println("Sorry, that account number does not exist within our records.");
         }
     }
     
