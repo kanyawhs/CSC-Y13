@@ -15,6 +15,8 @@ public class main
     final double EVERYDAY_SAVINGS_MIN = 0;
     final double CURRENT_MIN = -1000;
     final double MAX_WITHDRAWAL = 5000;
+    double depositTotal = 0;
+    double withdrawalTotal = 0;
 
     /**
      * Constructor for objects of class main
@@ -22,13 +24,19 @@ public class main
     public main()
     {
         accounts.loadFromFile();
-        System.out.println("Welcome to Kawaii-Bank account management! What would you like to do? (Enter number for option)");
+        System.out.println("Welcome to Kawaii-Bank account management!");
+        start();
+    }
+    
+    public void start() {
+        System.out.println("What would you like to do? (Enter number for option)");
 
         System.out.println("1 : Create a new account");
         System.out.println("2 : Close an account");
         System.out.println("3 : Check account balance");
         System.out.println("4 : Deposit into account");
         System.out.println("5 : Withdraw from account");
+        System.out.println("6 : End day");
         String userAction = kb.nextLine();
 
         if (userAction.equals("1")) {
@@ -41,8 +49,10 @@ public class main
             depositToAccount();
         } else if (userAction.equals("5")) {
             withdrawFromAccount();
+        } else if (userAction.equals("6")) {
+            end();
         } else {
-            String regex = ("1|2|3|4|5");
+            String regex = ("1|2|3|4|5|6");
             while (!userAction.matches(regex) && userAction.length() > 1) { // ensures user hasn't entered an option and can matche no more than 1 character
                 System.out.println("Please enter '1', '2', '3', '4', or '5' in accordance with program options.");
                 userAction = kb.nextLine();
@@ -113,6 +123,7 @@ public class main
         System.out.println("Account added to list: ");
         accounts.displayAll();
         accounts.saveToFile(" ");
+        start();
     }
 
     public void closeAccount() {
@@ -121,6 +132,8 @@ public class main
         System.out.println("Enter account number you wish to close (Note: Enter '-' characters with numbers):");
         String accountNumber = kb.nextLine();
         accounts.closeAccount(accountNumber);
+        accounts.saveToFile(" ");
+        start();
     }
 
     public void checkAccount() {
@@ -128,7 +141,7 @@ public class main
         String customerName = kb.nextLine();*/ // Will do if time
         System.out.println("Current accounts: ");
         accounts.displayAll();
-
+        start();
     }
 
     public void depositToAccount() {
@@ -139,6 +152,9 @@ public class main
         System.out.println("Enter amount to deposit: $");
         double amount = kb.nextDouble();
         accounts.deposit(accountNumber, amount);
+        depositTotal += amount;
+        accounts.saveToFile(" ");
+        start();
     }
 
     public void withdrawFromAccount() {
@@ -150,15 +166,25 @@ public class main
         double amount = kb.nextDouble();
         boolean amountValidity = false;
         while (!amountValidity) {
-            if (amount >= MAX_WITHDRAWAL) {
+            if (amount > MAX_WITHDRAWAL) {
                 amountValidity = false;
                 System.out.println("Sorry, max withdrawal is " + MAX_WITHDRAWAL);
                 System.out.println("Please try again.");
+                amount = kb.nextDouble();
             } else { 
                 amountValidity = true;
                 accounts.withdraw(accountNumber, amount);
             }
         }
+        withdrawalTotal += amount;
+        accounts.saveToFile(" ");
+        start();
+    }
+    
+    public void end() {
+        System.out.println("Total amount in bank: $");
+        accounts.total();
+        System.out.println("Total ");
     }
 
 }

@@ -14,7 +14,11 @@ import java.util.Collections;
 public class Bank
 {
     private ArrayList<Account> accounts = new ArrayList<Account>();
-    
+    final double EVERYDAY_SAVINGS_MIN = 0;
+    final double CURRENT_MIN = -1000;
+    final double MAX_WITHDRAWAL = 5000;
+    double depositTotal = 0;
+    double withdrawalTotal = 0;
     /**
      * Constructor for objects of class AccountCreator
      */
@@ -22,17 +26,17 @@ public class Bank
     {
         this.loadFromFile();
     }
-    
+
     void saveToFile (String Accounts) {
         File file = new File("Accounts.txt");
         try {
             FileWriter writer = new FileWriter(file);
             for (Account thisAccount : accounts) {
                 writer.write(thisAccount.getCustomerName() + "; " +
-                thisAccount.getAccountNumber() + "; " +
-                thisAccount.getCustomerAddress() + "; " +
-                thisAccount.getAccountType() + "; " +
-                thisAccount.getCurrentBalance() + "\n");
+                    thisAccount.getAccountNumber() + "; " +
+                    thisAccount.getCustomerAddress() + "; " +
+                    thisAccount.getAccountType() + "; " +
+                    thisAccount.getCurrentBalance() + "\n");
             }
             writer.flush();
             writer.close();
@@ -40,7 +44,7 @@ public class Bank
             System.out.println("Sorry! Couldn't write that file.");
         }
     }
-    
+
     void loadFromFile () {
         accounts.clear(); // avoids loading extra each time file is loaded?
         try {
@@ -55,15 +59,15 @@ public class Bank
             System.out.println(e);
         }
     }
-    
+
     void addAccount(Account currentAccount) {
         accounts.add(currentAccount);
     }
-    
+
     void removeAccount(Account currentAccount) {
         accounts.remove(currentAccount);
     }
-    
+
     void closeAccount(String accountNumber) {
         Scanner kb = new Scanner(System.in);
         ArrayList<Account> tempAccounts = new ArrayList<>(accounts); // to avoid concurrent modification
@@ -91,23 +95,43 @@ public class Bank
             System.out.println("Sorry, that account number does not exist within our records.");
         }
     }
-    
+
     void deposit(String accountNumber, double deposit) {
         Scanner kb = new Scanner(System.in);
         ArrayList<Account> tempAccounts = new ArrayList<>(accounts); // to avoid concurrent modification
         boolean found = false;
-        for (Account thisAccount: accounts) {
+        for (int i = 0; i < accounts.size(); i++) {
+            Account thisAccount = accounts.get(i);
             if (accountNumber.equals(thisAccount.getAccountNumber())) {
                 found = true;
                 String accountType = thisAccount.getAccountType();
                 System.out.println(thisAccount.getCustomerName() + " " + thisAccount.getAccountType() + " is the account you're looking for.");
                 System.out.println("It currently has a balance of $" + thisAccount.getCurrentBalance());
+                
+                double calculation = thisAccount.getCurrentBalance() + deposit;
+                boolean balanceValidity = false;
+                while (!balanceValidity) {
+                    if (accountType.equals("everyday") && calculation < EVERYDAY_SAVINGS_MIN || accountType.equals("savings") && calculation < EVERYDAY_SAVINGS_MIN) {
+                        System.out.println("Sorry, minimum balance for " + accountType + " account is " + EVERYDAY_SAVINGS_MIN);
+                        System.out.println("Please reenter deposit amount: $");
+                        deposit = kb.nextDouble(); // errr kind of inconvenient
+                    } else if (accountType.equals("current") && calculation < CURRENT_MIN) {
+                        System.out.println("Sorry, minimum balance for " + accountType + " account is " + CURRENT_MIN);
+                        System.out.println("Please reenter deposit amount: $");
+                        deposit = kb.nextDouble(); // errr kind of inconvenient
+                    } else {
+                        balanceValidity = true;
+                    }
+                }
+                
                 System.out.println("Would you like to deposit exactly $" + deposit + " into this account? Enter 'yes' or 'no'");
                 String userInput = kb.nextLine();
                 userInput = userInput.toLowerCase();
+
                 if (userInput.equals("yes")) {
                     double newBalance = thisAccount.getCurrentBalance() + deposit;
-                    // not sure how to apply to 1 argument in object?? look at older examples
+                    Account newAccount = new Account(thisAccount.getCustomerName(), thisAccount.getAccountNumber(), thisAccount.getCustomerAddress(), thisAccount.getAccountType(), newBalance);
+                    accounts.set(i, newAccount);
                 } else if (userInput.equals("no")) {
                     System.out.println("Operation cancelled.");
                 }
@@ -117,11 +141,61 @@ public class Bank
             System.out.println("Sorry, that account number does not exist within our records.");
         }
     }
-    
+
     void withdraw(String accountNumber, double withdraw) {
-        
+        Scanner kb = new Scanner(System.in);
+        ArrayList<Account> tempAccounts = new ArrayList<>(accounts); // to avoid concurrent modification
+        boolean found = false;
+        for (int i = 0; i < accounts.size(); i++) {
+            Account thisAccount = accounts.get(i);
+            if (accountNumber.equals(thisAccount.getAccountNumber())) {
+                found = true;
+                String accountType = thisAccount.getAccountType();
+                System.out.println(thisAccount.getCustomerName() + " " + thisAccount.getAccountType() + " is the account you're looking for.");
+                System.out.println("It currently has a balance of $" + thisAccount.getCurrentBalance());
+                
+                double calculation = thisAccount.getCurrentBalance() - withdraw;
+                boolean balanceValidity = false;
+                while (!balanceValidity) {
+                    if (accountType.equals("everyday") && calculation < EVERYDAY_SAVINGS_MIN || accountType.equals("savings") && calculation < EVERYDAY_SAVINGS_MIN) {
+                        System.out.println("Sorry, minimum balance for " + accountType + " account is " + EVERYDAY_SAVINGS_MIN);
+                        System.out.println("Please reenter deposit amount: $");
+                        withdraw = kb.nextDouble(); // errr kind of inconvenient
+                    } else if (accountType.equals("current") && calculation < CURRENT_MIN) {
+                        System.out.println("Sorry, minimum balance for " + accountType + " account is " + CURRENT_MIN);
+                        System.out.println("Please reenter deposit amount: $");
+                        withdraw = kb.nextDouble(); // errr kind of inconvenient
+                    } else {
+                        balanceValidity = true;
+                    }
+                }
+                
+                System.out.println("Would you like to withdraw exactly $" + withdraw + " into this account? Enter 'yes' or 'no'");
+                String userInput = kb.nextLine();
+                userInput = userInput.toLowerCase();
+                
+                if (userInput.equals("yes")) {
+                    double newBalance = thisAccount.getCurrentBalance() - withdraw;
+                    Account newAccount = new Account(thisAccount.getCustomerName(), thisAccount.getAccountNumber(), thisAccount.getCustomerAddress(), thisAccount.getAccountType(), newBalance);
+                    accounts.set(i, newAccount);
+                } else if (userInput.equals("no")) {
+                    System.out.println("Operation cancelled.");
+                }
+            }
+        }
+        if (!found) {
+            System.out.println("Sorry, that account number does not exist within our records.");
+        }
     }
-    
+
+    void total() {
+        double sum = 0;
+        for (Account thisAccount: accounts) {
+            sum += 1;
+        }
+        System.out.println(sum);
+    }
+
     void displayAll() {
         System.out.println(accounts.size()); // debugging
         for(Account currentAccount: accounts) {
