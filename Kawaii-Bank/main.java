@@ -3,7 +3,7 @@
  * Creates and manages accounts
  * 
  * @author Kanya Farley
- * @version 31/03
+ * @version 1/04
  */
 import java.util.Scanner;
 import java.util.Random;
@@ -184,7 +184,8 @@ public class main
     public void end() {
         System.out.println("Total amount in bank: $");
         accounts.total();
-        System.out.println("Total ");
+        System.out.println("Total amount deposited today: $" + depositTotal);
+        System.out.println("Total amount withdrawn today: $" + withdrawalTotal);
     }
 
 }
