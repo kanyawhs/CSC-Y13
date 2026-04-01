@@ -123,6 +123,7 @@ public class main
         System.out.println("Account added to list: ");
         accounts.displayAll();
         accounts.saveToFile(" ");
+        kb.nextLine(); // clears buffer
         start();
     }
 
@@ -133,6 +134,7 @@ public class main
         String accountNumber = kb.nextLine();
         accounts.closeAccount(accountNumber);
         accounts.saveToFile(" ");
+        kb.nextLine(); // clears buffer
         start();
     }
 
@@ -154,6 +156,7 @@ public class main
         accounts.deposit(accountNumber, amount);
         depositTotal += amount;
         accounts.saveToFile(" ");
+        kb.nextLine(); // clears buffer
         start();
     }
 
@@ -178,14 +181,16 @@ public class main
         }
         withdrawalTotal += amount;
         accounts.saveToFile(" ");
+        kb.nextLine(); // clears buffer
         start();
     }
     
     public void end() {
-        System.out.println("Total amount in bank: $");
-        accounts.total();
+        double sum = accounts.total();
+        System.out.print("Total amount in bank: " + sum);
         System.out.println("Total amount deposited today: $" + depositTotal);
         System.out.println("Total amount withdrawn today: $" + withdrawalTotal);
+        accounts.saveDayDataToFile(sum, depositTotal, withdrawalTotal);
     }
 
 }

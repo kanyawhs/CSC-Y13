@@ -114,11 +114,11 @@ public class Bank
                     if (accountType.equals("everyday") && calculation < EVERYDAY_SAVINGS_MIN || accountType.equals("savings") && calculation < EVERYDAY_SAVINGS_MIN) {
                         System.out.println("Sorry, minimum balance for " + accountType + " account is " + EVERYDAY_SAVINGS_MIN);
                         System.out.println("Please reenter deposit amount: $");
-                        deposit = kb.nextDouble(); // errr kind of inconvenient
+                        deposit = kb.nextDouble();
                     } else if (accountType.equals("current") && calculation < CURRENT_MIN) {
                         System.out.println("Sorry, minimum balance for " + accountType + " account is " + CURRENT_MIN);
                         System.out.println("Please reenter deposit amount: $");
-                        deposit = kb.nextDouble(); // errr kind of inconvenient
+                        deposit = kb.nextDouble();
                     } else {
                         balanceValidity = true;
                     }
@@ -159,12 +159,12 @@ public class Bank
                 while (!balanceValidity) {
                     if (accountType.equals("everyday") && calculation < EVERYDAY_SAVINGS_MIN || accountType.equals("savings") && calculation < EVERYDAY_SAVINGS_MIN) {
                         System.out.println("Sorry, minimum balance for " + accountType + " account is " + EVERYDAY_SAVINGS_MIN);
-                        System.out.println("Please reenter deposit amount: $");
-                        withdraw = kb.nextDouble(); // errr kind of inconvenient
+                        System.out.println("Please reenter withdrawal amount: $");
+                        withdraw = kb.nextDouble();
                     } else if (accountType.equals("current") && calculation < CURRENT_MIN) {
                         System.out.println("Sorry, minimum balance for " + accountType + " account is " + CURRENT_MIN);
-                        System.out.println("Please reenter deposit amount: $");
-                        withdraw = kb.nextDouble(); // errr kind of inconvenient
+                        System.out.println("Please reenter withdrawal amount: $");
+                        withdraw = kb.nextDouble();
                     } else {
                         balanceValidity = true;
                     }
@@ -188,16 +188,31 @@ public class Bank
         }
     }
 
-    void total() {
+    double total() {
         double sum = 0;
         for (Account thisAccount: accounts) {
-            sum += 1;
+            sum += thisAccount.getCurrentBalance();
         }
-        System.out.println(sum);
+        return sum;
+    }
+    
+    void saveDayDataToFile(double sum, double depositTotal, double withdrawalTotal) {
+        File file = new File("Day data.txt");
+        try {
+            FileWriter writer = new FileWriter(file);
+            writer.write("Total amount in bank: $" + sum +
+            ". Total deposited today: $" + depositTotal + ". Total withdrawn today: $"
+            + withdrawalTotal);
+            writer.flush();
+            writer.close();
+            
+        } catch (IOException e) {
+            System.out.println("Error: " + e);
+        }
     }
 
     void displayAll() {
-        System.out.println(accounts.size()); // debugging
+        //System.out.println(accounts.size()); // debugging
         for(Account currentAccount: accounts) {
             System.out.println(currentAccount.toString());
         }
