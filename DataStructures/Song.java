@@ -3,7 +3,7 @@
  * Blueprint for creating songs + a playlist
  *
  * @author Kanya Farley
- * @version 1
+ * @version 23/04
  */
 public class Song
 {
@@ -12,7 +12,7 @@ public class Song
     private String album = "n/a"; // defaults
     private int year;
     
-    Song firstSong;
+    Song song;
     /**
      * Constructor for objects of class Song
      */
@@ -61,12 +61,20 @@ public class Song
     }
     
     /* create playlist */
-    public void createPlaylist(Song firstSong) {
-        this.firstSong = firstSong;
+    public void createPlaylist() {
+        this.song = new Song();
     }
     
-    /* get playlist */
+    public void createPlaylist(Song firstSong) {
+        this.song = song;
+    }
+    
+    /* set and get playlist */
+    public void setPlaylist(Song song) {
+        this.song = song;
+    }
+    
     public Song getPlaylist() {
-        return(this.firstSong);
+        return(this.song);
     }
 }
