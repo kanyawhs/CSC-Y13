@@ -4,7 +4,7 @@
  * Doesn't quite work yet...
  *
  * @author Kanya Farley
- * @version 23/04
+ * @version 24/04
  */
 import java.util.Scanner;
 public class Playlist
@@ -12,6 +12,7 @@ public class Playlist
     Song firstSong;
     Song prevSong;
     Scanner kb = new Scanner(System.in);
+    Song temp;
     /**
      * Constructor for objects of class Playlist
      */
@@ -37,7 +38,10 @@ public class Playlist
         }
         firstSong.createPlaylist();
         prevSong = firstSong;
-        
+        option();
+    }
+    
+    public void option() {
         boolean cont = true;
         while (cont) {
             System.out.println("Add another song? Enter 'y' or 'n'");
@@ -47,26 +51,10 @@ public class Playlist
             } else if (!(input.toLowerCase().equals("n")) && !(input.toLowerCase().equals("y"))) {
                 System.out.println("Sorry, don't understand...");
             } else {
+                printPlaylist();
                 cont = false;
             }
-        }
-
-        // prints songs from first to last
-        Song temp = firstSong;
-        while (temp.getPlaylist() != null) {
-            System.out.println(temp.getName());
-            if (temp.getArtist().length() == 0) {
-                System.out.print(" by " + temp.getArtist());
-            }
-            if (temp.getAlbum().length() == 0) {
-                System.out.print(", " + temp.getAlbum());
-            }
-            if (temp.getYear() == 0) {
-                System.out.print(", " + temp.getYear());
-            }
-            temp = temp.getPlaylist();
-        }
-        System.out.println(temp.getName());
+        }      
     }
 
     public Song addSong() {
@@ -86,10 +74,30 @@ public class Playlist
         }
         System.out.println("Enter release year (or press enter to leave blank): ");
         String songYear = kb.nextLine();
-        if (kb.hasNextInt()) {
+        if (songYear.length() < 0) {
             song.setYear(Integer.parseInt(songYear));
         }
-        prevSong = song;
+        prevSong = song; // doesn't quite work??
+        option();
         return(song);
+    }
+    
+    public void printPlaylist() { // should I make it return something???
+        // prints songs from first to last
+        Song temp = prevSong;
+        while (temp.getPlaylist() != null) {
+            System.out.print(temp.getName());
+            if (temp.getArtist().length() > 0) {
+                System.out.print(" by " + temp.getArtist());
+            }
+            if (temp.getAlbum().length() > 0) {
+                System.out.print(", " + temp.getAlbum());
+            }
+            if (temp.getYear() > 0) {
+                System.out.print(", " + temp.getYear() + "\n");
+            }
+            temp = temp.getPlaylist();
+        }
+        System.out.println(temp.getName());
     }
 }

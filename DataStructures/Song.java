@@ -8,8 +8,8 @@
 public class Song
 {
     private String name;
-    private String artist = "n/a";
-    private String album = "n/a"; // defaults
+    private String artist;
+    private String album;
     private int year;
     
     Song song;
