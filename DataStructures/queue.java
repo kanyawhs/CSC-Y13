@@ -4,7 +4,7 @@
  * unfinished
  *
  * @author Kanya Farley
- * @version 24/04
+ * @version 30/04
  */
 import java.util.Scanner;
 public class queue
@@ -44,8 +44,8 @@ public class queue
                 createAnotherNode();
             } else {
                 System.out.println("Queue is empty.");
+                running = false;
             }
-
         }
         if (firstNode.queueEmpty() == true) {
             System.out.println("Queue is empty.");
