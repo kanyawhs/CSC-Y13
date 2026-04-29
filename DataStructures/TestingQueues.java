@@ -1,0 +1,27 @@
+
+/**
+ * Write a description of class TestingQueues here.
+ *
+ * @author Kanya Farley
+ * @version 30/04
+ */
+public class TestingQueues
+{
+    public static void main(String[] args) {
+        Queue myQueue = new Queue();
+        if (myQueue.queueEmpty()) {
+            System.out.println("Queue is empty.");
+        } else {
+            System.out.println("Queue is not empty.");
+        }
+        
+        Node newNode = new Node("New node!");
+        myQueue.enqueue(newNode);
+        
+        if (myQueue.queueEmpty()) {
+            System.out.println("Queue is empty.");
+        } else {
+            System.out.println("Queue is not empty.");
+        }
+    }
+}
