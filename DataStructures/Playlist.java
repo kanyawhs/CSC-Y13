@@ -4,7 +4,7 @@
  * Doesn't quite work yet...
  *
  * @author Kanya Farley
- * @version 24/04
+ * @version 30/04
  */
 import java.util.Scanner;
 public class Playlist
@@ -36,11 +36,10 @@ public class Playlist
         if (firstSongYear.length() < 0) {
             firstSong.setYear(Integer.parseInt(firstSongYear));
         }
-        firstSong.createPlaylist();
         prevSong = firstSong;
         option();
     }
-    
+
     public void option() {
         boolean cont = true;
         while (cont) {
@@ -48,20 +47,21 @@ public class Playlist
             String input = kb.nextLine();
             if (input.toLowerCase().equals("y")) {
                 addSong();
-            } else if (!(input.toLowerCase().equals("n")) && !(input.toLowerCase().equals("y"))) {
-                System.out.println("Sorry, don't understand...");
-            } else {
+                option();
+            } else if (input.toLowerCase().equals("n")) {
                 printPlaylist();
                 cont = false;
+            } else {
+                System.out.println("Sorry, don't understand...");
             }
         }      
     }
 
-    public Song addSong() {
+    public void addSong() {
         System.out.println("Enter title of song: ");
         String songTitle = kb.nextLine();
         Song song = new Song(songTitle);
-        prevSong.getPlaylist().createPlaylist(song);
+        prevSong.setNextSong(song);
         System.out.println("Enter artist name (or press enter to leave blank): ");
         String songArtist = kb.nextLine();
         if (songArtist.length() > 0) {
@@ -77,15 +77,13 @@ public class Playlist
         if (songYear.length() < 0) {
             song.setYear(Integer.parseInt(songYear));
         }
-        prevSong = song; // doesn't quite work??
-        option();
-        return(song);
+        prevSong = song;
     }
-    
-    public void printPlaylist() { // should I make it return something???
+
+    public void printPlaylist() { // doesn't quite work right yet
         // prints songs from first to last
         Song temp = prevSong;
-        while (temp.getPlaylist() != null) {
+        while (temp.getNextSong() != null) {
             System.out.print(temp.getName());
             if (temp.getArtist().length() > 0) {
                 System.out.print(" by " + temp.getArtist());
@@ -96,7 +94,7 @@ public class Playlist
             if (temp.getYear() > 0) {
                 System.out.print(", " + temp.getYear() + "\n");
             }
-            temp = temp.getPlaylist();
+            temp = temp.getNextSong();
         }
         System.out.println(temp.getName());
     }
