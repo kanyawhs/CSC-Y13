@@ -14,7 +14,6 @@ public class TestingQueues
         } else {
             System.out.println("Queue is not empty.");
         }
-        // queue is not empty beyond this point
         
         Node newNode = new Node("New node!");
         myQueue.enqueue(newNode);

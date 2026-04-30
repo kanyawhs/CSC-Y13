@@ -1,7 +1,6 @@
 
 /**
  * Creates a queue type linked list!
- * Not entirely working how it should(?)
  *
  * @author Kanya Farley
  * @version 1/5
@@ -12,7 +11,7 @@ public class Queue
 {
     private Node head;
     private Node tail;
-    
+
     Node firstNode;
     Node nextNode;
     Scanner kb = new Scanner(System.in);
@@ -31,11 +30,11 @@ public class Queue
             queueEmpty();
         }
     }
-    
+
     public void createHead(String data) {
         this.head = new Node();
     }
-    
+
     public boolean queueEmpty() {
         if (this.head == null) {
             return(true);
@@ -59,16 +58,23 @@ public class Queue
             }
         }
     }
-    
+
     public void enqueue(Node newNode) {
         Node node = new Node();
-        if (queueEmpty() == true) {
+        if (queueEmpty() == true) { // works correctly if false???????????
             this.head = newNode;
             this.tail = newNode;
-        } else {
+        } else { // no idea if this does what I want it to
             String nextData = newNode.getData();
             Node nextNode = new Node();
             this.tail = nextNode;
         }
     }
+
+    /*public String dequeue() {
+        if (queueEmpty() == false) {
+
+            this.head = nextNode;
+        }
+    }*/
 }
