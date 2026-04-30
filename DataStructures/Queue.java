@@ -1,10 +1,11 @@
 
 /**
  * Creates a queue type linked list!
- * unfinished
+ * Not entirely working how it should(?)
  *
  * @author Kanya Farley
- * @version 30/04
+ * @version 1/5
+ * 
  */
 import java.util.Scanner;
 public class Queue
@@ -27,12 +28,7 @@ public class Queue
             createHead(firstData);
             createAnotherNode();
         } else {
-            System.out.println("Queue is empty.");
-        }
-        if (queueEmpty() == true) {
-            System.out.println("Queue is empty.");
-        } else if (queueEmpty() == false) {
-            System.out.println("Queue is not empty.");
+            queueEmpty();
         }
     }
     
@@ -55,17 +51,12 @@ public class Queue
             String nextData = kb.nextLine();
             Node nextNode = new Node();
             if (!nextData.equals("")) {
-                createHead(nextData);
+                //createHead(nextData);
                 createAnotherNode();
             } else {
-                System.out.println("Queue is empty.");
+                queueEmpty();
                 running = false;
             }
-        }
-        if (queueEmpty() == true) {
-            System.out.println("Queue is empty.");
-        } else if (queueEmpty() == false) {
-            System.out.println("Queue is not empty.");
         }
     }
     

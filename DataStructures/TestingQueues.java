@@ -3,7 +3,7 @@
  * Write a description of class TestingQueues here.
  *
  * @author Kanya Farley
- * @version 30/04
+ * @version 1/5
  */
 public class TestingQueues
 {
@@ -14,9 +14,11 @@ public class TestingQueues
         } else {
             System.out.println("Queue is not empty.");
         }
+        // queue is not empty beyond this point
         
         Node newNode = new Node("New node!");
         myQueue.enqueue(newNode);
+        
         
         if (myQueue.queueEmpty()) {
             System.out.println("Queue is empty.");
