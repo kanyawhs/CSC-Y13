@@ -1,56 +1,72 @@
 
 /**
  * Creates a queue type linked list!
- * unfinished
  *
  * @author Kanya Farley
- * @version 30/04
+ * @version 1/5
+ * 
  */
 import java.util.Scanner;
-public class queue
+public class Queue
 {
+    private Node head;
+    private Node tail;
+
     Node firstNode;
     Node nextNode;
     Scanner kb = new Scanner(System.in);
     /**
      * Constructor for objects of class Queue
      */
-    public queue()
+    public Queue()
     {
-        System.out.println("Enter first node data or leave blank: ");
-        String firstData = kb.nextLine();
-        Node firstNode = new Node();
-        if (!firstData.equals("")) {
-            firstNode.createHead(firstData);
+        //
+    }
+
+    public void createHead(String data) {
+        this.head = new Node();
+    }
+
+    public boolean queueEmpty() {
+        if (this.head == null) {
+            return(true);
+        } else {
+            return(false);
+        }
+    }
+    
+    public void createAnotherNode() {
+        System.out.println("Enter next node data or leave blank: ");
+        String nextData = kb.nextLine();
+        Node nextNode = new Node();
+        if (!nextData.equals("")) {
+            enqueue(nextNode);
             createAnotherNode();
         } else {
-            System.out.println("Queue is empty.");
-        }
-        if (firstNode.queueEmpty() == true) {
-            System.out.println("Queue is empty.");
-        } else if (firstNode.queueEmpty() == false) {
-            System.out.println("Queue is not empty.");
+            queueEmpty();
         }
     }
 
-    public void createAnotherNode() {
-        boolean running = true;
-        while (running) {
-            System.out.println("Enter next node data or leave blank: ");
-            String nextData = kb.nextLine();
+    public void enqueue(Node newNode) {
+        Node node = new Node();
+        if (queueEmpty() == true) {
+            this.head = newNode;
+            this.tail = newNode;
+        } else {
+            String nextData = newNode.getData(); // points to next node
             Node nextNode = new Node();
-            if (!nextData.equals("")) {
-                nextNode.createHead(nextData);
-                createAnotherNode();
-            } else {
-                System.out.println("Queue is empty.");
-                running = false;
-            }
+            this.tail = nextNode; // newest node becomes tail
         }
-        if (firstNode.queueEmpty() == true) {
-            System.out.println("Queue is empty.");
-        } else if (firstNode.queueEmpty() == false) {
-            System.out.println("Queue is not empty.");
+    }
+
+    public String dequeue() {
+        if (queueEmpty() == false) {
+            String last = this.head.getData(); // gets head
+            this.head.getNextNode(); // points to follower
+            return(last);
+        } else if (queueEmpty() == true) {
+            System.out.println("Queue empty. Nothing to dequeue.");
         }
+        return("");
     }
 }

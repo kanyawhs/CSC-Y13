@@ -1,0 +1,18 @@
+#BlueJ class context
+comment0.target=Stack
+comment0.text=\r\n\ Methods\ for\ a\ stack\r\n\r\n\ @author\ Kanya\ Farley\r\n\ @version\ 23/04\r\n
+comment1.params=
+comment1.target=Stack()
+comment1.text=\r\n\ Constructor\ for\ objects\ of\ class\ Stack\r\n\ \r\n\ Empty\ since\ only\ top\ element\ must\ be\ set,\ which\ is\ set\ in\ "push"\ method\r\n
+comment2.params=
+comment2.target=boolean\ emptyStack()
+comment2.text=checks\ if\ stack\ is\ empty
+comment3.params=data
+comment3.target=void\ push(java.lang.String)
+comment3.text=add\ a\ node\ to\ the\ top\ of\ the\ list
+comment4.params=
+comment4.target=java.lang.String\ pop()
+comment4.text=pop\ a\ node\ off\ top\ of\ stack
+comment5.params=
+comment5.target=Node\ getTop()
+numComments=6

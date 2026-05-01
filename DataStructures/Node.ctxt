@@ -1,0 +1,20 @@
+#BlueJ class context
+comment0.target=Node
+comment0.text=\r\n\ Linked\ list\ with\ nodes\r\n\r\n\ @author\ Kanya\ Farley\r\n\ @version\ 30/04\r\n
+comment1.params=
+comment1.target=Node()
+comment1.text=Constructor\ for\ nodes\ with\ no\ data
+comment2.params=data
+comment2.target=Node(java.lang.String)
+comment2.text=Constructor\ for\ nodes\ with\ data
+comment3.params=data
+comment3.target=void\ setData(java.lang.String)
+comment3.text=setters
+comment4.params=n
+comment4.target=void\ setNextNode(Node)
+comment5.params=
+comment5.target=java.lang.String\ getData()
+comment5.text=getters
+comment6.params=
+comment6.target=Node\ getNextNode()
+numComments=7

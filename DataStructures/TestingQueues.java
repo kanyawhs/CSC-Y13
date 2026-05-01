@@ -15,14 +15,14 @@ public class TestingQueues
             System.out.println("Queue is not empty.");
         }
         
-        Node newNode = new Node("New node!");
-        myQueue.enqueue(newNode);
-        
+        myQueue.createAnotherNode();
+        myQueue.dequeue(); // should become empty after first node?
         
         if (myQueue.queueEmpty()) {
             System.out.println("Queue is empty.");
         } else {
             System.out.println("Queue is not empty.");
         }
+        
     }
 }

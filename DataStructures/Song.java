@@ -3,7 +3,7 @@
  * Blueprint for creating songs + a playlist
  *
  * @author Kanya Farley
- * @version 23/04
+ * @version 1/5
  */
 public class Song
 {
@@ -70,11 +70,11 @@ public class Song
     }
     
     /* set and get playlist */
-    public void setPlaylist(Song song) {
+    public void setNextSong(Song song) {
         this.song = song;
     }
     
-    public Song getPlaylist() {
+    public Song getNextSong() {
         return(this.song);
     }
 }

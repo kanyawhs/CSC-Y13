@@ -4,7 +4,7 @@
  * Doesn't quite work yet...
  *
  * @author Kanya Farley
- * @version 30/04
+ * @version 1/5
  */
 import java.util.Scanner;
 public class Playlist
