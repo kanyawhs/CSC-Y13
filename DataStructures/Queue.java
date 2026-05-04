@@ -3,7 +3,9 @@
  * Creates a queue type linked list!
  *
  * @author Kanya Farley
- * @version 1/5
+ * @version 4/5
+ * 
+ * dequeue() not quite working??
  * 
  */
 import java.util.Scanner;
@@ -12,7 +14,6 @@ public class Queue
     private Node head;
     private Node tail;
 
-    Node firstNode;
     Node nextNode;
     Scanner kb = new Scanner(System.in);
     /**
@@ -20,19 +21,12 @@ public class Queue
      */
     public Queue()
     {
-        System.out.println("Enter first node data or leave blank: ");
-        String firstData = kb.nextLine();
-        Node firstNode = new Node();
-        if (!firstData.equals("")) {
-            createHead(firstData);
-            createAnotherNode();
-        } else {
-            queueEmpty();
-        }
+        //
     }
 
-    public void createHead(String data) {
-        this.head = new Node();
+    public void createHead(Node node) {
+        this.head = node;
+        this.tail = node;
     }
 
     public boolean queueEmpty() {
@@ -44,37 +38,65 @@ public class Queue
     }
 
     public void createAnotherNode() {
-        boolean running = true;
-        while (running) {
-            System.out.println("Enter next node data or leave blank: ");
-            String nextData = kb.nextLine();
-            Node nextNode = new Node();
-            if (!nextData.equals("")) {
-                //createHead(nextData);
-                createAnotherNode();
-            } else {
-                queueEmpty();
-                running = false;
-            }
+        System.out.println("Enter next node data or leave blank: ");
+        String nextData = kb.nextLine();
+        Node nextNode = new Node();
+        if (!nextData.equals("")) {
+            enqueue(nextNode);
+            createAnotherNode();
+        } else {
+            queueEmpty();
         }
     }
 
     public void enqueue(Node newNode) {
-        Node node = new Node();
-        if (queueEmpty() == true) { // works correctly if false???????????
+        if (queueEmpty() == true) {
             this.head = newNode;
             this.tail = newNode;
-        } else { // no idea if this does what I want it to
-            String nextData = newNode.getData();
-            Node nextNode = new Node();
-            this.tail = nextNode;
+        } else {
+            this.tail.setNextNode(newNode);
+            this.tail = newNode;
         }
     }
 
-    /*public String dequeue() {
-        if (queueEmpty() == false) {
-
-            this.head = nextNode;
+    public String dequeue() {
+        if (queueEmpty() == false) { // NOT WORKING YET!
+            String data = head.getData();
+            // COME BACK TO THIS W SHANE
+            return(data);
+        } else if (queueEmpty() == true) {
+            System.out.println("Queue empty. Nothing to dequeue.");
         }
-    }*/
+        return("");
+    }
+
+    public void addAtEnd(Node end) {
+        this.tail = new Node(); // get tail
+        enqueue(end); // add final node
+    }
+
+    public int Count (int payload) { // where do i get payload lol
+        Node thisNode = new Node();
+        thisNode = this.head;
+        int count = 0;
+        for (int i = 1; i < payload+1; i++) {
+            if (thisNode.getData().equals(Integer.toString(payload))) {
+                count++;
+            }
+            thisNode.getNextNode();
+        }
+        return(count);
+    }
+
+    public void InsertInOrder (Node anode) {
+        
+    }
+    
+    public void Uniquify() {
+        
+    }
+    
+    public void Sort() {
+        
+    }
 }
