@@ -3,7 +3,7 @@
  * Creates a queue type linked list!
  *
  * @author Kanya Farley
- * @version 4/5
+ * @version 7/5
  * 
  * dequeue() not quite working??
  * 
@@ -37,7 +37,7 @@ public class Queue
         }
     }
 
-    public void createAnotherNode() {
+    /*public void createAnotherNode() {
         System.out.println("Enter next node data or leave blank: ");
         String nextData = kb.nextLine();
         Node nextNode = new Node();
@@ -47,7 +47,7 @@ public class Queue
         } else {
             queueEmpty();
         }
-    }
+    }*/ // 
 
     public void enqueue(Node newNode) {
         if (queueEmpty() == true) {
@@ -62,7 +62,7 @@ public class Queue
     public String dequeue() {
         if (queueEmpty() == false) { // NOT WORKING YET!
             String data = head.getData();
-            // COME BACK TO THIS W SHANE
+            this.head = head.getNextNode(); // points to next node?
             return(data);
         } else if (queueEmpty() == true) {
             System.out.println("Queue empty. Nothing to dequeue.");
@@ -75,20 +75,24 @@ public class Queue
         enqueue(end); // add final node
     }
 
-    public int Count (int payload) { // where do i get payload lol
+    public int Count (String value) {
         Node thisNode = new Node();
         thisNode = this.head;
         int count = 0;
-        for (int i = 1; i < payload+1; i++) {
-            if (thisNode.getData().equals(Integer.toString(payload))) {
+        if (thisNode.getData().equals(value)) { // check head?
+            count++;
+        }
+        while (thisNode.getNextNode() != null) {
+            if (thisNode.getData().equals(value)) {
                 count++;
             }
-            thisNode.getNextNode();
+            thisNode = thisNode.getNextNode();
         }
         return(count);
     }
-
-    public void InsertInOrder (Node anode) {
+    
+    // EXTENSION
+    public void InsertInOrder (Node anode) { // for integers
         
     }
     
