@@ -1,12 +1,12 @@
 
 /**
- * Write a description of class OrderQueue here.
+ * Write a description of class WaitingQueue here.
  *
  * @author Kanya Farley
  * @version 21/5
  */
 import java.util.Scanner;
-public class OrderQueue
+public class WaitingQueue
 {
     private Customer front;
     private Customer back;
@@ -14,19 +14,19 @@ public class OrderQueue
     Customer next;
     Scanner kb = new Scanner(System.in);
     /**
-     * Constructor for objects of class OrderQueue
+     * Constructor for objects of class WaitingQueue
      */
-    public OrderQueue()
+    public WaitingQueue()
     {
         //
     }
-
-    public void firstInOrderQueue(Customer customer) {
+    
+    public void firstInWaitingQueue(Customer customer) {
         this.front = customer;
         this.back = customer;
     }
     
-    public boolean orderQueueEmpty() {
+    public boolean waitingQueueEmpty() {
         if (this.front == null) {
             return(true);
         } else {
@@ -34,24 +34,24 @@ public class OrderQueue
         }
     }
     
-    public void orderEnqueue(Customer newCust) {
-        if (orderQueueEmpty() == true) {
-            firstInOrderQueue(newCust);
+    public void orderEnqueue(Customer newCust) { // need to get from last dequeued from order queue
+        if (waitingQueueEmpty() == true) {
+            firstInWaitingQueue(newCust);
         } else {
             this.back.setNextCustomer(newCust);
             this.back = newCust;
         }
     }
     
-    public String orderDequeue() {
-        if (orderQueueEmpty() == false) {
+    public String orderDequeue() { 
+        if (waitingQueueEmpty() == false) {
             String sprite = front.getSprite();
             String recipe = front.getRecipe();
             this.front = front.getNextCustomer();
             
             return(sprite + recipe);
-        } else if (orderQueueEmpty() == true) {
-            System.out.println("No customers");
+        } else if (waitingQueueEmpty() == true) {
+            System.out.println("No customers waiting");
         }
         return("");
     }

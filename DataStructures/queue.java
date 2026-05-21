@@ -3,7 +3,9 @@
  * Creates a queue type linked list!
  *
  * @author Kanya Farley
- * @version 1/5
+ * @version 7/5
+ * 
+ * dequeue() not quite working??
  * 
  */
 import java.util.Scanner;
@@ -12,7 +14,6 @@ public class Queue
     private Node head;
     private Node tail;
 
-    Node firstNode;
     Node nextNode;
     Scanner kb = new Scanner(System.in);
     /**
@@ -23,8 +24,9 @@ public class Queue
         //
     }
 
-    public void createHead(String data) {
-        this.head = new Node();
+    public void createHead(Node node) {
+        this.head = node;
+        this.tail = node;
     }
 
     public boolean queueEmpty() {
@@ -34,8 +36,8 @@ public class Queue
             return(false);
         }
     }
-    
-    public void createAnotherNode() {
+
+    /*public void createAnotherNode() {
         System.out.println("Enter next node data or leave blank: ");
         String nextData = kb.nextLine();
         Node nextNode = new Node();
@@ -45,28 +47,60 @@ public class Queue
         } else {
             queueEmpty();
         }
-    }
+    }*/ // 
 
     public void enqueue(Node newNode) {
-        Node node = new Node();
         if (queueEmpty() == true) {
             this.head = newNode;
             this.tail = newNode;
         } else {
-            String nextData = newNode.getData(); // points to next node
-            Node nextNode = new Node();
-            this.tail = nextNode; // newest node becomes tail
+            this.tail.setNextNode(newNode);
+            this.tail = newNode;
         }
     }
 
     public String dequeue() {
-        if (queueEmpty() == false) {
-            String last = this.head.getData(); // gets head
-            this.head.getNextNode(); // points to follower
-            return(last);
+        if (queueEmpty() == false) { // NOT WORKING YET!
+            String data = head.getData();
+            this.head = head.getNextNode(); // points to next node?
+            return(data);
         } else if (queueEmpty() == true) {
             System.out.println("Queue empty. Nothing to dequeue.");
         }
         return("");
+    }
+
+    public void addAtEnd(Node end) {
+        this.tail = new Node(); // get tail
+        enqueue(end); // add final node
+    }
+
+    public int Count (String value) {
+        Node thisNode = new Node();
+        thisNode = this.head;
+        int count = 0;
+        if (thisNode.getData().equals(value)) { // check head?
+            count++;
+        }
+        while (thisNode.getNextNode() != null) {
+            if (thisNode.getData().equals(value)) {
+                count++;
+            }
+            thisNode = thisNode.getNextNode();
+        }
+        return(count);
+    }
+    
+    // EXTENSION
+    public void InsertInOrder (Node anode) { // for integers
+        
+    }
+    
+    public void Uniquify() {
+        
+    }
+    
+    public void Sort() {
+        
     }
 }
