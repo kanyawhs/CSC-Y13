@@ -1,9 +1,9 @@
 
 /**
- * Write a description of class WaitingQueue here.
+ * Ordering customers join this queue when order taken, and leave when served.
  *
  * @author Kanya Farley
- * @version 21/5
+ * @version 25/5
  */
 import java.util.Scanner;
 public class WaitingQueue
