@@ -3,7 +3,7 @@
  * Ordering customers join this queue when order taken, and leave when served.
  *
  * @author Kanya Farley
- * @version 25/5
+ * @version 28/5
  */
 import java.util.Scanner;
 public class WaitingQueue
@@ -34,7 +34,7 @@ public class WaitingQueue
         }
     }
     
-    public void orderEnqueue(Customer newCust) { // need to get from last dequeued from order queue
+    public void waitingEnqueue(Customer newCust) {
         if (waitingQueueEmpty() == true) {
             firstInWaitingQueue(newCust);
         } else {
@@ -43,7 +43,7 @@ public class WaitingQueue
         }
     }
     
-    public String orderDequeue() { 
+    public String waitingDequeue() { 
         if (waitingQueueEmpty() == false) {
             String sprite = front.getSprite();
             String recipe = front.getRecipe();

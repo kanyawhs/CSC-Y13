@@ -1,9 +1,9 @@
 
 /**
- * New customers appear in this queue and are dequeued when order taken
+ * New customers appear in this queue and are dequeued when the customers order is taken
  *
  * @author Kanya Farley
- * @version 25/5
+ * @version 28/5
  */
 import java.util.Scanner;
 public class OrderQueue
@@ -48,7 +48,7 @@ public class OrderQueue
             String sprite = front.getSprite();
             String recipe = front.getRecipe();
             this.front = front.getNextCustomer();
-            return(sprite + recipe); // needs to be set as waiting queue front
+            return(sprite + "-" + recipe);
         } else if (orderQueueEmpty() == true) {
             System.out.println("No customers");
         }
