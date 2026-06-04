@@ -1,0 +1,21 @@
+#BlueJ class context
+comment0.target=mainECSver
+comment1.params=
+comment1.target=void\ mainECSver()
+comment1.text=\r\n\ Constructor\ for\ objects\ of\ class\ mainECSver\r\n
+comment2.params=
+comment2.target=Customer\ newRandomCustomer()
+comment3.params=
+comment3.target=java.lang.String\ randomRecipe()
+comment3.text=\r\n\ Generates\ a\ random\ recipe\ selected\ from\ array\ options\r\n
+comment4.params=
+comment4.target=java.lang.String\ randomCustomer()
+comment4.text=\r\n\ Generates\ a\ random\ customer\ sprite\ selected\ from\ array\ options\r\n
+comment5.params=queue
+comment5.target=void\ orderQueueStatus(OrderQueue)
+comment5.text=check\ status\ of\ queues
+comment6.params=queue
+comment6.target=void\ waitingQueueStatus(WaitingQueue)
+comment7.params=oQueue
+comment7.target=Customer\ orderTaken(OrderQueue)
+numComments=8

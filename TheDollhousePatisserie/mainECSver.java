@@ -6,7 +6,8 @@
  * @version 5/6
  */
 import java.util.Random;
-public class main
+import ecs100.*;
+public class mainECSver
 {
     String[] recipe = {"Parfait", "Fruit Tart", "Cinnamon Roll", "Cake", "Ube Cupcake", "Coffee Jelly", "Melon Float"};
     String[] sprite = {"girl1", "boy1", "girl2", "boy2", "mascot1", "mascot2"};
@@ -14,13 +15,13 @@ public class main
     OrderQueue oQueue = new OrderQueue();
     WaitingQueue wQueue = new WaitingQueue();
     /**
-     * Constructor for objects of class main
+     * Constructor for objects of class mainECSver
      */
-    public void main()
+    public void mainECSver()
     {
         orderQueueStatus(oQueue);
         
-        oQueue.orderEnqueue(newRandomCustomer()); // adds to queue
+        oQueue.orderEnqueue(newRandomCustomer()); // adds to order queue
         
         /* testing queue transferral AKA taking orders */
         orderQueueStatus(oQueue);
@@ -33,11 +34,12 @@ public class main
     }
     
     public Customer newRandomCustomer() {
+        /* testing randomizers */
         String recipe = randomRecipe();
         String sprite = randomCustomer();
         
         Customer newCustomer = new Customer(sprite, recipe); // make new customer
-        System.out.println(sprite + " orders a " + recipe); // debug
+        UI.println(sprite + " orders a " + recipe); // debug
         return newCustomer;
     }
     
@@ -63,17 +65,17 @@ public class main
     /* check status of queues */
     public void orderQueueStatus(OrderQueue queue) {
         if (queue.orderQueueEmpty() == true) {
-            System.out.println("No customers.");
+            UI.println("No customers.");
         } else if (queue.orderQueueEmpty() == false) {
-            System.out.println("Someone wants to order!");
+            UI.println("Someone wants to order!");
         }
     }
     
     public void waitingQueueStatus(WaitingQueue queue) {
         if (queue.waitingQueueEmpty() == true) {
-            System.out.println("No current orders.");
+            UI.println("No current orders.");
         } else if (queue.waitingQueueEmpty() == false) {
-            System.out.println("Someone is waiting for an order!");
+            UI.println("Someone is waiting for an order!");
         }
     }
     
@@ -83,7 +85,7 @@ public class main
         String nextSprite = next[0];
         String nextRecipe = next[1];
         Customer waitingCustomer = new Customer(next[0], next[1]);
-        System.out.println(next[0] + " is waiting for a " + next[1]); // debugging
+        UI.println(next[0] + " is waiting for a " + next[1]); // debugging
         return waitingCustomer;
     }
 }
