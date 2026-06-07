@@ -3,33 +3,82 @@
  * This is the class where the actual game actions occur
  *
  * @author Kanya Farley
- * @version 5/6
+ * @version 8/6
  */
 import java.util.Random;
-public class main
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+public class main extends JFrame implements ActionListener
 {
     String[] recipe = {"Parfait", "Fruit Tart", "Cinnamon Roll", "Cake", "Ube Cupcake", "Coffee Jelly", "Melon Float"};
     String[] sprite = {"girl1", "boy1", "girl2", "boy2", "mascot1", "mascot2"};
     
     OrderQueue oQueue = new OrderQueue();
     WaitingQueue wQueue = new WaitingQueue();
+    String currentSprite;
+    String currentRecipe;
+    Customer currentCustomer;
+    
+    JMenuBar menuBar;
+    JMenu mainGame;
+    JMenuItem menuItemTakeOrder;
+    JMenuItem menuItemDeliverOrder;
+    JMenuItem menuItemQuit;
     /**
      * Constructor for objects of class main
      */
     public void main()
     {
-        orderQueueStatus(oQueue);
+        /* window GUI */
+        setTitle("The Dollhouse Patisserie");
+        this.getContentPane().setPreferredSize(new Dimension(828, 672));
+        this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         
+        menuBar = new JMenuBar();
+        this.setJMenuBar(menuBar);
+        mainGame = new JMenu("Operation");
+        menuBar.add(mainGame);
+        
+        menuItemTakeOrder = new JMenuItem("Take next order");
+        menuItemTakeOrder.addActionListener(this);
+        menuItemDeliverOrder = new JMenuItem("Deliver order");
+        menuItemDeliverOrder.addActionListener(this);
+        menuItemQuit = new JMenuItem("Quit");
+        menuItemQuit.addActionListener(this);
+        mainGame.add(menuItemTakeOrder);
+        mainGame.add(menuItemDeliverOrder);
+        mainGame.add(menuItemQuit);
+        
+        // content
+        
+        /*testing*/
+        orderQueueStatus(oQueue);
         oQueue.orderEnqueue(newRandomCustomer()); // adds to queue
         
-        /* testing queue transferral AKA taking orders */
-        orderQueueStatus(oQueue);
-        waitingQueueStatus(wQueue);
-        wQueue.waitingEnqueue(orderTaken(oQueue));
-        System.out.println("Order has been taken");
-        orderQueueStatus(oQueue);
-        waitingQueueStatus(wQueue);
-        
+        this.pack();
+        this.toFront();
+        this.setVisible(true);
+    }
+    
+    public void actionPerformed(ActionEvent e) {
+        String cmd = e.getActionCommand();
+        switch (cmd) {
+            case "Take next order":
+                    wQueue.waitingEnqueue(orderTaken(oQueue));
+                    System.out.println("Order has been taken");
+                break;
+            case "Deliver order":
+                    if (wQueue.waitingQueueEmpty() == true) {
+                        System.out.println("No customers waiting. Can't deliver.");
+                    } else if (wQueue.waitingQueueEmpty() == false) {
+                        wQueue.waitingDequeue();
+                    }
+                break;
+            case "Quit":
+                    System.exit(0);
+                break;
+        }
     }
     
     public Customer newRandomCustomer() {
@@ -80,8 +129,8 @@ public class main
     public Customer orderTaken(OrderQueue oQueue) {
         WaitingQueue wQueue = new WaitingQueue();
         String [] next = (oQueue.orderDequeue()).split("-");
-        String nextSprite = next[0];
-        String nextRecipe = next[1];
+        currentSprite = next[0];
+        currentRecipe = next[1];
         Customer waitingCustomer = new Customer(next[0], next[1]);
         System.out.println(next[0] + " is waiting for a " + next[1]); // debugging
         return waitingCustomer;
