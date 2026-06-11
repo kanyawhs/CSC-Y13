@@ -3,9 +3,12 @@
  * New customers appear in this queue and are dequeued when the customers order is taken
  *
  * @author Kanya Farley
- * @version 28/5
+ * @version 11/6
  */
 import java.util.Scanner;
+import java.util.ArrayList;
+import java.util.Set;
+
 public class OrderQueue
 {
     private Customer front;
@@ -24,6 +27,7 @@ public class OrderQueue
     public void firstInOrderQueue(Customer customer) {
         this.front = customer;
         this.back = customer;
+        
     }
     
     public boolean orderQueueEmpty() {
@@ -53,5 +57,15 @@ public class OrderQueue
             System.out.println("No customers");
         }
         return("");
+    }
+    
+    public int getSize() {
+        int count = 0;
+        Customer currentCustomer = this.front;
+        while (currentCustomer.getNextCustomer() != null) {
+            count++;
+            currentCustomer = currentCustomer.getNextCustomer();
+        }
+        return count;
     }
 }
