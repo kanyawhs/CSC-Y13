@@ -3,7 +3,7 @@
  * Ordering customers join this queue when order taken, and leave when served.
  *
  * @author Kanya Farley
- * @version 28/5
+ * @version 12/6
  */
 import java.util.Scanner;
 public class WaitingQueue
@@ -54,5 +54,9 @@ public class WaitingQueue
             System.out.println("No customers waiting");
         }
         return("");
+    }
+    
+    public Customer getFront() {
+        return this.front;
     }
 }

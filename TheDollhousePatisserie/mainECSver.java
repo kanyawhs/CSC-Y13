@@ -1,12 +1,19 @@
 
 /**
  * This is the class where the actual game actions occur
+ * 
+ * !! For the ecs100 library to work (and not cause compile error), BlueJ must be version 5.5.0
+ * 
+ * To do:
+ * Erase order customer image
  *
  * @author Kanya Farley
- * @version 5/6
+ * @version 12/6
  */
 import java.util.Random;
 import ecs100.*;
+import java.awt.*;
+import java.awt.event.*;
 public class mainECSver
 {
     String[] recipe = {"Parfait", "Fruit Tart", "Cinnamon Roll", "Cake", "Ube Cupcake", "Coffee Jelly", "Melon Float"};
@@ -14,36 +21,56 @@ public class mainECSver
     
     OrderQueue oQueue = new OrderQueue();
     WaitingQueue wQueue = new WaitingQueue();
+    String currentSprite;
+    String currentRecipe;
+    Customer currentQueueCustomer = oQueue.getFront();
+    Customer currentWaitingCustomer = wQueue.getFront();
+    
+    /* GUI */
+    final int oQueueX = 252;
+    final int oQueueY = 375;
+    
+    final int wQueueX = 452;
+    final int wQueueY = 375;
+    
+    final int custWidth = 220;
+    final int custHeight = 300;
     /**
      * Constructor for objects of class mainECSver
      */
     public void mainECSver()
     {
-        orderQueueStatus(oQueue);
+        /* background GUI */
+        UI.setWindowSize(1098, 672);
+        UI.drawImage("kitchen_DHP.jpeg", 0, 0);
+        
         
         oQueue.orderEnqueue(newRandomCustomer()); // adds to order queue
-        
-        /* testing queue transferral AKA taking orders */
-        orderQueueStatus(oQueue);
-        waitingQueueStatus(wQueue);
+        if (currentQueueCustomer != null) {
+            //UI.drawImage(
+        }
         wQueue.waitingEnqueue(orderTaken(oQueue));
-        System.out.println("Order has been taken");
-        orderQueueStatus(oQueue);
-        waitingQueueStatus(wQueue);
+        if (currentWaitingCustomer != null) {
+            drawWaitingCustomer(currentWaitingCustomer.getSprite());
+        }
+        
         
     }
     
-    public Customer newRandomCustomer() {
-        /* testing randomizers */
-        String recipe = randomRecipe();
-        String sprite = randomCustomer();
+    public void setupGUI() {
         
-        Customer newCustomer = new Customer(sprite, recipe); // make new customer
-        UI.println(sprite + " orders a " + recipe); // debug
-        return newCustomer;
     }
     
     /* random generators */
+    public Customer newRandomCustomer() {
+        String recipe = randomRecipe();
+        String sprite = randomCustomer();
+        Customer newCustomer = new Customer(sprite, recipe); // make new customer
+        UI.println(sprite + " orders a " + recipe); // debug
+        drawOrderingCustomer(sprite);
+        return newCustomer;
+    }
+    
     /**
      * Generates a random recipe selected from array options
      */
@@ -60,6 +87,27 @@ public class mainECSver
         Random ranSprite = new Random();
         int randomSprite = ranSprite.nextInt(sprite.length);
         return sprite[randomSprite];
+    }
+    
+    public void drawOrderingCustomer(String sprite) {
+        switch (sprite) {
+            case "girl1" : UI.drawImage("girl1_DHP.png", oQueueX, oQueueY, custWidth, custHeight);
+                break;
+            case "girl2" : UI.drawImage("girl2_DHP.png", oQueueX, oQueueY, custWidth, custHeight);
+                break;
+            case "boy1" : UI.drawImage("boy1_DHP.png", oQueueX, oQueueY, custWidth, custHeight);
+                break;
+            case "boy2" : UI.drawImage("boy2_DHP.png", oQueueX, oQueueY, custWidth, custHeight);
+                break;
+            case "mascot1" : UI.drawImage("mascot1_DHP.png", oQueueX, oQueueY, custWidth, custHeight);
+                break;
+            case "mascot2" : UI.drawImage("mascot2_DHP.png", oQueueX, oQueueY, custWidth, custHeight);
+                break;
+        }
+    }
+    
+    public void drawOrder(String recipe) {
+        //case "Parfait" : UI.drawImage(
     }
     
     /* check status of queues */
@@ -79,13 +127,39 @@ public class mainECSver
         }
     }
     
+    /* other (core) methods */
+    public void takeOrder(OrderQueue oQueue) {
+        if (oQueue.getSize() < 4) {
+            oQueue.orderEnqueue(newRandomCustomer());
+            UI.sleep(30000); // adds customer every 30 seconds
+        }
+    }
+    
     public Customer orderTaken(OrderQueue oQueue) {
         WaitingQueue wQueue = new WaitingQueue();
         String [] next = (oQueue.orderDequeue()).split("-");
-        String nextSprite = next[0];
-        String nextRecipe = next[1];
+        currentSprite = next[0];
+        currentRecipe = next[1];
         Customer waitingCustomer = new Customer(next[0], next[1]);
-        UI.println(next[0] + " is waiting for a " + next[1]); // debugging
+        //UI.println(next[0] + " is waiting for a " + next[1]); // debugging
         return waitingCustomer;
     }
+    
+    public void drawWaitingCustomer(String sprite) {
+        switch (sprite) {
+            case "girl1" : UI.drawImage("girl1_DHP.png", wQueueX, wQueueY, custWidth, custHeight);
+                break;
+            case "girl2" : UI.drawImage("girl2_DHP.png", wQueueX, wQueueY, custWidth, custHeight);
+                break;
+            case "boy1" : UI.drawImage("boy1_DHP.png", wQueueX, wQueueY, custWidth, custHeight);
+                break;
+            case "boy2" : UI.drawImage("boy2_DHP.png", wQueueX, wQueueY, custWidth, custHeight);
+                break;
+            case "mascot1" : UI.drawImage("mascot1_DHP.png", wQueueX, wQueueY, custWidth, custHeight);
+                break;
+            case "mascot2" : UI.drawImage("mascot2_DHP.png", wQueueX, wQueueY, custWidth, custHeight);
+                break;
+        }
+    }
+
 }

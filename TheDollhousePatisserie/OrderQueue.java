@@ -3,7 +3,7 @@
  * New customers appear in this queue and are dequeued when the customers order is taken
  *
  * @author Kanya Farley
- * @version 11/6
+ * @version 12/6
  */
 import java.util.Scanner;
 import java.util.ArrayList;
@@ -57,6 +57,10 @@ public class OrderQueue
             System.out.println("No customers");
         }
         return("");
+    }
+    
+    public Customer getFront() {
+        return this.front;
     }
     
     public int getSize() {
