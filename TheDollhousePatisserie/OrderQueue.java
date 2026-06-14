@@ -3,7 +3,7 @@
  * New customers appear in this queue and are dequeued when the customers order is taken
  *
  * @author Kanya Farley
- * @version 12/6
+ * @version 15/6
  */
 import java.util.Scanner;
 import java.util.ArrayList;
@@ -13,7 +13,7 @@ public class OrderQueue
 {
     private Customer front;
     private Customer back;
-    
+
     Customer next;
     Scanner kb = new Scanner(System.in);
     /**
@@ -27,9 +27,9 @@ public class OrderQueue
     public void firstInOrderQueue(Customer customer) {
         this.front = customer;
         this.back = customer;
-        
+
     }
-    
+
     public boolean orderQueueEmpty() {
         if (this.front == null) {
             return(true);
@@ -37,7 +37,7 @@ public class OrderQueue
             return(false);
         }
     }
-    
+
     public void orderEnqueue(Customer newCust) {
         if (orderQueueEmpty() == true) {
             firstInOrderQueue(newCust);
@@ -46,7 +46,7 @@ public class OrderQueue
             this.back = newCust;
         }
     }
-    
+
     public String orderDequeue() {
         if (orderQueueEmpty() == false) {
             String sprite = front.getSprite();
@@ -58,17 +58,19 @@ public class OrderQueue
         }
         return("");
     }
-    
+
     public Customer getFront() {
         return this.front;
     }
-    
+
     public int getSize() {
         int count = 0;
         Customer currentCustomer = this.front;
-        while (currentCustomer.getNextCustomer() != null) {
-            count++;
-            currentCustomer = currentCustomer.getNextCustomer();
+        if (currentCustomer != null) {
+            while (currentCustomer.getNextCustomer() != null) {
+                count++;
+                currentCustomer = currentCustomer.getNextCustomer();
+            }
         }
         return count;
     }
