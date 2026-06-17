@@ -1,9 +1,11 @@
 
 /**
  * This is the class where the actual game actions occur
+ * 
+ * GUI currently not working??? or I'm not testing correctly
  *
  * @author Kanya Farley
- * @version 11/6
+ * @version 18/6
  */
 import java.util.Random;
 import javax.swing.*;
@@ -46,8 +48,38 @@ public class main extends JFrame implements ActionListener, MouseListener
     JLabel mascot2ImgLabel;
     
     /* recipes */
+    String parfaitImg = "Parfait_DHP.png";
+    JLabel parfaitImgLabel;
+    String fruitTartImg = "Fruit Tart_DHP.png";
+    JLabel fruitTartImgLabel;
+    String cinnamonRollImg = "Cinnamon Roll_DHP.png";
+    JLabel cinnamonRollImgLabel;
+    String cakeImg = "Cake_DHP.png";
+    JLabel cakeImgLabel;
+    String ubeCupcakeImg = "Ube Cupcake_DHP.png";
+    JLabel ubeCupcakeImgLabel;
+    String coffeeJellyImg = "Coffee Jelly_DHP.png";
+    JLabel coffeeJellyImgLabel;
+    String melonFloatImg = "Melon Float_DHP.png";
+    JLabel melonFloatImgLabel;
     
+    /* bubbles */
+    String speakingImg = "speaking_DHP.png";
+    JLabel speakingImgLabel;
+    String thinkingImg = "thinking_DHP.png";
+    JLabel thinkingImgLabel;
     
+    /* GUI sizing */
+    final int oQueueX = 252;
+    final int oQueueY = 375;
+
+    final int wQueueX = 628;
+    final int wQueueY = 375;
+
+    final int custWidth = 220;
+    final int custHeight = 300;
+
+    final int custXGap = 180;
     /**
      * Constructor for objects of class main
      */
@@ -153,6 +185,7 @@ public class main extends JFrame implements ActionListener, MouseListener
         String sprite = randomCustomer();
         Customer newCustomer = new Customer(sprite, recipe); // make new customer
         System.out.println(sprite + " orders a " + recipe); // debug
+        drawOrderingCustomer(sprite, recipe, oQueue);
         return newCustomer;
     }
     
@@ -172,6 +205,91 @@ public class main extends JFrame implements ActionListener, MouseListener
         Random ranSprite = new Random();
         int randomSprite = ranSprite.nextInt(sprite.length);
         return sprite[randomSprite];
+    }
+    
+    public void drawOrderingCustomer(String sprite, String recipe, OrderQueue oQueue) {
+        int x = 0;
+        int y = oQueueY;
+        if (oQueue.getFront() == null) {
+            x = oQueueX;
+        } else if (oQueue.getSize() == 0) {
+            x = oQueueX - custWidth;
+        } else if (oQueue.getSize() == 1) {
+            x = oQueueX - (custWidth*2);
+        } else if (oQueue.getSize() == 2) {
+            x = oQueueX - (custWidth*3);
+        }
+        switch (sprite) {
+            case "girl1" : ImageIcon girl1 = new ImageIcon();
+                        girl1ImgLabel = new JLabel(girl1);
+                        girl1ImgLabel.setBounds(x, y, custWidth, custHeight);
+                        mainBG.add(girl1ImgLabel);
+                    break;
+            case "girl2" : ImageIcon girl2 = new ImageIcon();
+                        girl2ImgLabel = new JLabel(girl2);
+                        girl2ImgLabel.setBounds(x, y, custWidth, custHeight);
+                        mainBG.add(girl2ImgLabel);
+                    break;
+            case "boy1" : ImageIcon boy1 = new ImageIcon();
+                        boy1ImgLabel = new JLabel(boy1);
+                        boy1ImgLabel.setBounds(x, y, custWidth, custHeight);
+                        mainBG.add(boy1ImgLabel);
+                    break;
+            case "boy2" : ImageIcon boy2 = new ImageIcon();
+                        boy2ImgLabel = new JLabel(boy2);
+                        boy2ImgLabel.setBounds(x, y, custWidth, custHeight);
+                        mainBG.add(boy2ImgLabel);
+                    break;
+            case "mascot1" : ImageIcon mascot1 = new ImageIcon();
+                        mascot1ImgLabel = new JLabel(mascot1);
+                        mascot1ImgLabel.setBounds(x, y, custWidth, custHeight);
+                        mainBG.add(mascot1ImgLabel);
+                    break;
+            case "mascot2" : ImageIcon mascot2 = new ImageIcon();
+                        mascot2ImgLabel = new JLabel(mascot2);
+                        mascot2ImgLabel.setBounds(x, y, custWidth, custHeight);
+                        mainBG.add(mascot2ImgLabel);
+        }
+        ImageIcon speaking = new ImageIcon();
+        speakingImgLabel = new JLabel(speaking);
+        speakingImgLabel.setBounds(x+165, y-35, 65, 70);
+        switch (recipe) {
+            case "Parfait" : ImageIcon parfait = new ImageIcon();
+                            parfaitImgLabel = new JLabel(parfait);
+                            parfaitImgLabel.setBounds(x-25, y-35, 65, 70);
+                            mainBG.add(parfaitImgLabel);
+                        break;
+            case "Fruit Tart" : ImageIcon fruitTart = new ImageIcon();
+                            fruitTartImgLabel = new JLabel(fruitTart);
+                            fruitTartImgLabel.setBounds(x-25, y-35, 65, 70);
+                            mainBG.add(fruitTartImgLabel);
+                        break;
+            case "Cinnamon Roll" : ImageIcon cinnamonRoll = new ImageIcon();
+                            cinnamonRollImgLabel = new JLabel(cinnamonRoll);
+                            cinnamonRollImgLabel.setBounds(x-25, y-35, 65, 70);
+                            mainBG.add(cinnamonRollImgLabel);
+                        break;
+            case "Cake" : ImageIcon cake = new ImageIcon();
+                            cakeImgLabel = new JLabel(cake);
+                            cakeImgLabel.setBounds(x-25, y-35, 65, 70);
+                            mainBG.add(cakeImgLabel);
+                        break;
+            case "Ube Cupcake" : ImageIcon ubeCupcake = new ImageIcon();
+                            ubeCupcakeImgLabel = new JLabel(ubeCupcake);
+                            ubeCupcakeImgLabel.setBounds(x-25, y-35, 65, 70);
+                            mainBG.add(ubeCupcakeImgLabel);
+                        break;
+            case "Coffee Jelly" : ImageIcon coffeeJelly = new ImageIcon();
+                            coffeeJellyImgLabel = new JLabel(coffeeJelly);
+                            coffeeJellyImgLabel.setBounds(x-25, y-35, 65, 70);
+                            mainBG.add(coffeeJellyImgLabel);
+                        break;
+            case "Melon Float" : ImageIcon melonFloat = new ImageIcon();
+                            melonFloatImgLabel = new JLabel(melonFloat);
+                            melonFloatImgLabel.setBounds(x-25, y-35, 65, 70);
+                            mainBG.add(melonFloatImgLabel);
+                        break;
+        }
     }
     
     /* check status of queues */
@@ -196,7 +314,7 @@ public class main extends JFrame implements ActionListener, MouseListener
         if (oQueue.getSize() < 4) {
             oQueue.orderEnqueue(newRandomCustomer());
             try {
-                Thread.sleep(30000); // adds customer every 30 seconds
+                Thread.sleep(5000); // adds customer every 30 seconds
             } catch (InterruptedException ie){
                 ie.printStackTrace();
             }
