@@ -8,7 +8,7 @@
  * Erase order customer image
  *
  * @author Kanya Farley
- * @version 15/6
+ * @version 18/6
  */
 import java.util.Random;
 import ecs100.*;
@@ -16,14 +16,24 @@ import java.awt.*;
 import java.awt.event.*;
 public class mainECSver
 {
+    boolean active = true;
+
     String[] recipe = {"Parfait", "Fruit Tart", "Cinnamon Roll", "Cake", "Ube Cupcake", "Coffee Jelly", "Melon Float"};
     String[] sprite = {"girl1", "boy1", "girl2", "boy2", "mascot1", "mascot2"};
+
+    double pressedX = 0;
+    double pressedY = 0;
+    double releasedX = 0;
+    double releasedY = 0;
 
     OrderQueue oQueue = new OrderQueue();
     WaitingQueue wQueue = new WaitingQueue();
     String currentSprite;
     String currentRecipe;
-
+    Customer cust1;
+    Customer cust2;
+    Customer cust3;
+    Customer cust4;
     /* GUI */
     final int oQueueX = 252;
     final int oQueueY = 375;
@@ -34,7 +44,7 @@ public class mainECSver
     final int custWidth = 220;
     final int custHeight = 300;
 
-    final int custXGap = 230;
+    final int custXGap = 180;
     /**
      * Constructor for objects of class mainECSver
      */
@@ -44,20 +54,39 @@ public class mainECSver
         UI.setWindowSize(1098, 672);
         UI.drawImage("kitchen_DHP.jpeg", 0, 0);
 
-        /* testing */
-        addOrder(oQueue);
-        UI.sleep(20000);
-        if (!oQueue.orderQueueEmpty()) {
-            wQueue.waitingEnqueue(orderTaken(oQueue));
-            if (!wQueue.waitingQueueEmpty()) {
-                drawWaitingCustomer(wQueue.getFront().getSprite());
+        while (active) {
+
+            /* testing */
+            addOrder(oQueue);
+            
+            if (!oQueue.orderQueueEmpty() && wQueue.waitingQueueEmpty()) {
+                wQueue.waitingEnqueue(orderTaken(oQueue));
+                if (!wQueue.waitingQueueEmpty()) {
+                    drawWaitingCustomer(wQueue.getFront().getSprite(), wQueue.getFront().getRecipe(), wQueue);
+                }
+            } else {
+                UI.println("Sorry, you can't take any orders right now.");
             }
         }
 
     }
 
     public void setupGUI() {
+        UI.setMouseListener(this::doMouse);
+    }
 
+    public void doMouse(String action, double x, double y) {
+        switch (action) {
+            case "pressed" -> {
+                    this.pressedX = x;
+                    this.pressedY = y;
+                }
+            case "released" -> {
+                    this.releasedX = x;
+                    this.releasedY = y;
+                    
+                }
+        }
     }
 
     /* random generators */
@@ -66,7 +95,7 @@ public class mainECSver
         String sprite = randomCustomer();
         Customer newCustomer = new Customer(sprite, recipe); // make new customer
         UI.println(sprite + " orders a " + recipe); // debug
-        drawOrderingCustomer(sprite, oQueue);
+        drawOrderingCustomer(sprite, recipe, oQueue);
         return newCustomer;
     }
 
@@ -88,20 +117,29 @@ public class mainECSver
         return sprite[randomSprite];
     }
 
-    public void drawOrderingCustomer(String sprite, OrderQueue oQueue) {
+    public void drawOrderingCustomer(String sprite, String recipe, OrderQueue oQueue) {
+        // may have to reframe to work with moving queue up??
         if (oQueue.getFront() == null) {
-            UI.drawImage(sprite + "_DHP.png", oQueueX, oQueueY, custWidth, custHeight);
+            UI.drawImage(sprite + "_DHP.png", oQueueX, oQueueY, custWidth, custHeight); // sprite
+            UI.drawImage("speaking_DHP.png", oQueueX+140, oQueueY-50, 100, 100);
+            UI.drawImage(recipe + "_DHP.png", oQueueX+165, oQueueY-35, 65, 70);
+            cust1 = new Customer(sprite, recipe);
         } else if (oQueue.getSize() == 0) {
-            UI.drawImage(sprite + "_DHP.png", oQueueX - custXGap, oQueueY, custWidth, custHeight);
+            UI.drawImage(sprite + "_DHP.png", oQueueX-custXGap, oQueueY, custWidth, custHeight);
+            UI.drawImage("speaking_DHP.png", oQueueX-custXGap+140, oQueueY-50, 100, 100);
+            UI.drawImage(recipe + "_DHP.png", oQueueX-custXGap+165, oQueueY-35, 65, 70);
+            cust2 = new Customer(sprite, recipe);
         } else if (oQueue.getSize() == 1) {
-            UI.drawImage(sprite + "_DHP.png", oQueueX - (custXGap*2), oQueueY, custWidth, custHeight);
+            UI.drawImage(sprite + "_DHP.png", oQueueX-(custXGap*2), oQueueY, custWidth, custHeight);
+            UI.drawImage("speaking_DHP.png", oQueueX-(custXGap*2)+140, oQueueY-50, 100, 100);
+            UI.drawImage(recipe + "_DHP.png", oQueueX-(custXGap*2)+165, oQueueY-35, 65, 70);
+            cust3 = new Customer(sprite, recipe);
         } else if (oQueue.getSize() == 2) {
-            UI.drawImage(sprite + "_DHP.png", oQueueX - (custXGap*3), oQueueY, custWidth, custHeight);
+            UI.drawImage(sprite + "_DHP.png", oQueueX-(custXGap*3), oQueueY, custWidth, custHeight);
+            UI.drawImage("speaking_DHP.png", oQueueX-(custXGap*3)+140, oQueueY-50, 100, 100);
+            UI.drawImage(recipe + "_DHP.png", oQueueX-(custXGap*3)+165, oQueueY-35, 65, 70);
+            cust4 = new Customer(sprite, recipe);
         }
-    }
-
-    public void drawOrder(String recipe) {
-        //case "Parfait" : UI.drawImage(
     }
 
     /* check status of queues */
@@ -123,7 +161,7 @@ public class mainECSver
 
     /* other (core) methods */
     public void addOrder(OrderQueue oQueue) {
-        while (oQueue.getSize() < 4) {
+        while (oQueue.getSize() < 3) {
             oQueue.orderEnqueue(newRandomCustomer());
             //UI.sleep(30000); // adds customer every 30 seconds
             UI.sleep(5000);
@@ -141,25 +179,23 @@ public class mainECSver
         /* moving queue up visually */
         UI.eraseImage(next[0] + "_DHP.png", oQueueX, oQueueY); // erases a block of the kitchen????
         UI.drawImage("kitchen_DHP.jpeg", 0, 0); // redraws the kitchen
+        
+        // not sure how to move customers up, may need external assistance...
+        cust1 = cust2;
+        drawOrderingCustomer(cust1.getSprite(), cust1.getRecipe(), oQueue);
+        cust2 = cust3;
+        drawOrderingCustomer(cust2.getSprite(), cust2.getRecipe(), oQueue);
+        cust3 = cust4;
+        drawOrderingCustomer(cust3.getSprite(), cust3.getRecipe(), oQueue);
+        cust4 = null;
 
         return waitingCustomer;
     }
 
-    public void drawWaitingCustomer(String sprite) { // not working
-        switch (sprite) {
-            case "girl1" : UI.drawImage("girl1_DHP.png", wQueueX, wQueueY, custWidth, custHeight);
-                break;
-            case "girl2" : UI.drawImage("girl2_DHP.png", wQueueX, wQueueY, custWidth, custHeight);
-                break;
-            case "boy1" : UI.drawImage("boy1_DHP.png", wQueueX, wQueueY, custWidth, custHeight);
-                break;
-            case "boy2" : UI.drawImage("boy2_DHP.png", wQueueX, wQueueY, custWidth, custHeight);
-                break;
-            case "mascot1" : UI.drawImage("mascot1_DHP.png", wQueueX, wQueueY, custWidth, custHeight);
-                break;
-            case "mascot2" : UI.drawImage("mascot2_DHP.png", wQueueX, wQueueY, custWidth, custHeight);
-                break;
-        }
+    public void drawWaitingCustomer(String sprite, String recipe, WaitingQueue wQueue) { // not working
+        UI.drawImage(sprite + "_DHP.png", wQueueX, wQueueY, custWidth, custHeight); // sprite
+        UI.drawImage("thinking_DHP.png", wQueueX-10, wQueueY-50, 100, 100);
+        UI.drawImage(recipe + "_DHP.png", wQueueX, wQueueY-35, 65, 70);
     }
 
 }
