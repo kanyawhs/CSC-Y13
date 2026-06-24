@@ -8,7 +8,7 @@
  * Cannot move to next step/method for recipes...
  *
  * @author Kanya Farley
- * @version 24/6
+ * @version 25/6
  */
 import java.util.Random;
 import ecs100.*;
@@ -87,7 +87,7 @@ public class mainECSver
                         UI.println("Sorry, you can't take an order right now.");
                     }
 
-                    if (active && releasedX >= wQueueX-10 && releasedX <= wQueueX+90 && releasedY >= wQueueY-50 && releasedY <= wQueueY+50 && orderComplete == true) {
+                    if (this.active && releasedX >= wQueueX-10 && releasedX <= wQueueX+90 && releasedY >= wQueueY-50 && releasedY <= wQueueY+50 && orderComplete == true) {
                         wQueue.waitingDequeue();
                         UI.println("Order complete!");
                     }
@@ -99,6 +99,7 @@ public class mainECSver
                             refridgerate(wQueue.getFront().getRecipe());
                         } else {
                             UI.println("Wrong step!");
+                            UI.println("Required step: " + step);
                         }
                     }
                     /* chop */
@@ -108,6 +109,7 @@ public class mainECSver
                             chop(wQueue.getFront().getRecipe());
                         } else {
                             UI.println("Wrong step!");
+                            UI.println("Required step: " + step);
                         }
                     }
                     /* mix */
@@ -117,12 +119,29 @@ public class mainECSver
                             mix(wQueue.getFront().getRecipe());
                         } else {
                             UI.println("Wrong step!");
+                            UI.println("Required step: " + step);
                         }
                     }
                     /* oven */
-                    UI.setColor(Color.red);
-                    UI.drawRect(516, 85, 168, 165);
-                    
+                    if (!wQueue.waitingQueueEmpty() && releasedX >= 516 && releasedX <=684 && releasedY >= 85 && releasedY <= 250) {
+                        actual = "oven";
+                        if (actual == step) {
+                            oven(wQueue.getFront().getRecipe());
+                        } else {
+                            UI.println("Wrong step!");
+                            UI.println("Required step: " + step);
+                        }
+                    }
+                    /* decorate */
+                    if (!wQueue.waitingQueueEmpty() && releasedX >= 700 && releasedX <= 770 && releasedY >= 94 && releasedY <= 159) {
+                        actual = "mix";
+                        if (actual == step) {
+                            decorate(wQueue.getFront().getRecipe());
+                        } else {
+                            UI.println("Wrong step!");
+                            UI.println("Required step: " + step);
+                        }
+                    }
                 }
         }
     }
@@ -242,10 +261,10 @@ public class mainECSver
         // definitely not refined yet
         switch (recipe) {
             case "Parfait" : UI.println("Step 1: Refridgerate yoghurt");
-                step = "refridgerate";
+                step = ("refridgerate");
                 if (step == actual) {
                     UI.println("Step 2: Chop fruits");
-                    step = "chop";
+                    step = ("chop");
                     actual = "";
                     if (step == actual) {
                         UI.println("Step 3: Put together and decorate!");
@@ -259,23 +278,23 @@ public class mainECSver
                 break;
             case "Fruit Tart" : UI.println("Step 1: Mix pastry ingredients");
                 step = "mix";
-                if (step == actual) {
+                if (step.equals(actual)) {
                     UI.println("Step 2: Bake pastry in oven");
                     step = "bake";
                     actual = "";
-                    if (step == actual) {
+                    if (step.equals(actual)) {
                         UI.println("Step 3: Chop fruits");
                         step = "chop";
                         actual = "";
-                        if (step == actual) {
+                        if (step.equals(actual)) {
                             UI.println("Step 4: Decorate tart");
                             step = "decorate";
                             actual = "";
-                            if (step == actual) {
+                            if (step.equals(actual)) {
                                 UI.println("Step 5: Refridgerate");
                                 step = "refridgerate";
                                 actual = "";
-                                if (step == actual) {
+                                if (step.equals(actual)) {
                                     orderComplete = true;
                                 }
                             }
@@ -299,6 +318,7 @@ public class mainECSver
         UI.println("Mixing...");
         UI.sleep(5000);
         UI.println("Done!");
+        
     }
 
     public void oven (String recipe) {
