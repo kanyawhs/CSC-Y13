@@ -4,11 +4,11 @@
  * 
  * !! For the ecs100 library to work (and not cause compile error), BlueJ must be version 5.5.0
  * 
- * To do:
- * Erase order customer image
+ * Notes:
+ * Cannot move to next step/method for recipes...
  *
  * @author Kanya Farley
- * @version 19/6
+ * @version 24/6
  */
 import java.util.Random;
 import ecs100.*;
@@ -61,6 +61,9 @@ public class mainECSver
 
         while (active) {
             addOrder(oQueue);
+            if (orderComplete) {
+                wQueue.waitingDequeue();
+            }
         }
 
     }
@@ -74,30 +77,11 @@ public class mainECSver
             case "released" -> {
                     this.releasedX = x;
                     this.releasedY = y;
-                    if (active && releasedX >=oQueueX+140 && releasedX <= oQueueX+240 && releasedY >= oQueueY-50 && releasedY <= oQueueY+50 && !oQueue.orderQueueEmpty() && wQueue.waitingQueueEmpty()) {
+                    if (this.active && releasedX >=oQueueX+140 && releasedX <= oQueueX+240 && releasedY >= oQueueY-50 && releasedY <= oQueueY+50 && !oQueue.orderQueueEmpty() && wQueue.waitingQueueEmpty()) {
                         wQueue.waitingEnqueue(orderTaken(oQueue));
                         if (!wQueue.waitingQueueEmpty()) {
                             drawWaitingCustomer(wQueue.getFront().getSprite(), wQueue.getFront().getRecipe(), wQueue);
-                            /* refridgerate */
-                            if (releasedX >= 70 && releasedX <= 220 && releasedY >= 20 && releasedY <= 240) {
-                                actual = "refridgerate";
-                                if (actual == step) {
-                                    refridgerate(wQueue.getFront().getRecipe());
-                                } else {
-                                    UI.println("Wrong step!");
-                                }
-                            }
-                            /* chop */
-                            if (releasedX >= 268 && releasedX <= 318 && releasedY >= 90 && releasedY <= 190) {
-                                actual = "chop";
-                                if (actual == step) {
-                                    chop(wQueue.getFront().getRecipe());
-                                } else {
-                                    UI.println("Wrong step!");
-                                }
-                            }
-                            /* mix */
-                            UI.setColor(Color.red);
+
                         }
                     } else if (releasedX >=oQueueX+140 && releasedX <= oQueueX+240 && releasedY >= oQueueY && releasedY <= oQueueY+100 && orderComplete == false) {
                         UI.println("Sorry, you can't take an order right now.");
@@ -107,6 +91,38 @@ public class mainECSver
                         wQueue.waitingDequeue();
                         UI.println("Order complete!");
                     }
+
+                    /* refridgerate */
+                    if (!wQueue.waitingQueueEmpty() && releasedX >= 70 && releasedX <= 220 && releasedY >= 20 && releasedY <= 240) {
+                        actual = "refridgerate";
+                        if (actual == step) {
+                            refridgerate(wQueue.getFront().getRecipe());
+                        } else {
+                            UI.println("Wrong step!");
+                        }
+                    }
+                    /* chop */
+                    if (!wQueue.waitingQueueEmpty() && releasedX >= 268 && releasedX <= 318 && releasedY >= 90 && releasedY <= 190) {
+                        actual = "chop";
+                        if (actual == step) {
+                            chop(wQueue.getFront().getRecipe());
+                        } else {
+                            UI.println("Wrong step!");
+                        }
+                    }
+                    /* mix */
+                    if (!wQueue.waitingQueueEmpty() && releasedX >= 392 && releasedX <= 482 && releasedY >= 68 && releasedY <= 143) {
+                        actual = "mix";
+                        if (actual == step) {
+                            mix(wQueue.getFront().getRecipe());
+                        } else {
+                            UI.println("Wrong step!");
+                        }
+                    }
+                    /* oven */
+                    UI.setColor(Color.red);
+                    UI.drawRect(516, 85, 168, 165);
+                    
                 }
         }
     }
@@ -212,6 +228,7 @@ public class mainECSver
         }
 
         orderComplete = false;
+        recipeStart(currentRecipe, wQueue);
         return waitingCustomer;
     }
 
@@ -226,8 +243,19 @@ public class mainECSver
         switch (recipe) {
             case "Parfait" : UI.println("Step 1: Refridgerate yoghurt");
                 step = "refridgerate";
-                UI.sleep(5000);
-                orderComplete = true;
+                if (step == actual) {
+                    UI.println("Step 2: Chop fruits");
+                    step = "chop";
+                    actual = "";
+                    if (step == actual) {
+                        UI.println("Step 3: Put together and decorate!");
+                        step = "decorate";
+                        actual = "";
+                        if (step == actual) {
+                            orderComplete = true;
+                        }
+                    }
+                }
                 break;
             case "Fruit Tart" : UI.println("Step 1: Mix pastry ingredients");
                 step = "mix";
@@ -247,11 +275,15 @@ public class mainECSver
                                 UI.println("Step 5: Refridgerate");
                                 step = "refridgerate";
                                 actual = "";
+                                if (step == actual) {
+                                    orderComplete = true;
+                                }
                             }
                         }
                     }
                 }
                 break;
+
         }
     }
 
