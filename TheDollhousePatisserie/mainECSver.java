@@ -8,19 +8,21 @@
  * Cannot move to next step/method for recipes...
  *
  * @author Kanya Farley
- * @version 25/6
+ * @version 26/6
  */
 import java.util.Random;
 import ecs100.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.ArrayList;
+
 public class mainECSver
 {
     boolean active = true;
 
     String[] recipe = {"Parfait", "Fruit Tart", "Cinnamon Roll", "Cake", "Ube Cupcake", "Coffee Jelly", "Melon Float"};
     String[] sprite = {"girl1", "boy1", "girl2", "boy2", "mascot1", "mascot2"};
-    String step;
+    ArrayList<String> step = new ArrayList<String>();
     String actual;
 
     double pressedX = 0;
@@ -50,9 +52,9 @@ public class mainECSver
 
     final int custXGap = 180;
     /**
-     * Constructor for objects of class mainECSver
+     * Constructor for objects of class CopyOfmainECSver
      */
-    public void mainECSver()
+    public void CopyOfmainECSver()
     {
         /* background GUI */
         UI.setWindowSize(1098, 672);
@@ -61,9 +63,7 @@ public class mainECSver
 
         while (active) {
             addOrder(oQueue);
-            if (orderComplete) {
-                wQueue.waitingDequeue();
-            }
+
         }
 
     }
@@ -88,14 +88,13 @@ public class mainECSver
                     }
 
                     if (this.active && releasedX >= wQueueX-10 && releasedX <= wQueueX+90 && releasedY >= wQueueY-50 && releasedY <= wQueueY+50 && orderComplete == true) {
-                        wQueue.waitingDequeue();
-                        UI.println("Order complete!");
+                        serveWaitingCustomer();
                     }
 
                     /* refridgerate */
                     if (!wQueue.waitingQueueEmpty() && releasedX >= 70 && releasedX <= 220 && releasedY >= 20 && releasedY <= 240) {
                         actual = "refridgerate";
-                        if (actual == step) {
+                        if (actual == step.get(0)) {
                             refridgerate(wQueue.getFront().getRecipe());
                         } else {
                             UI.println("Wrong step!");
@@ -105,7 +104,7 @@ public class mainECSver
                     /* chop */
                     if (!wQueue.waitingQueueEmpty() && releasedX >= 268 && releasedX <= 318 && releasedY >= 90 && releasedY <= 190) {
                         actual = "chop";
-                        if (actual == step) {
+                        if (actual == step.get(0)) {
                             chop(wQueue.getFront().getRecipe());
                         } else {
                             UI.println("Wrong step!");
@@ -115,7 +114,7 @@ public class mainECSver
                     /* mix */
                     if (!wQueue.waitingQueueEmpty() && releasedX >= 392 && releasedX <= 482 && releasedY >= 68 && releasedY <= 143) {
                         actual = "mix";
-                        if (actual == step) {
+                        if (actual == step.get(0)) {
                             mix(wQueue.getFront().getRecipe());
                         } else {
                             UI.println("Wrong step!");
@@ -125,7 +124,7 @@ public class mainECSver
                     /* oven */
                     if (!wQueue.waitingQueueEmpty() && releasedX >= 516 && releasedX <=684 && releasedY >= 85 && releasedY <= 250) {
                         actual = "oven";
-                        if (actual == step) {
+                        if (actual == step.get(0)) {
                             oven(wQueue.getFront().getRecipe());
                         } else {
                             UI.println("Wrong step!");
@@ -134,8 +133,8 @@ public class mainECSver
                     }
                     /* decorate */
                     if (!wQueue.waitingQueueEmpty() && releasedX >= 700 && releasedX <= 770 && releasedY >= 94 && releasedY <= 159) {
-                        actual = "mix";
-                        if (actual == step) {
+                        actual = "decorate";
+                        if (actual == step.get(0)) {
                             decorate(wQueue.getFront().getRecipe());
                         } else {
                             UI.println("Wrong step!");
@@ -254,55 +253,71 @@ public class mainECSver
     public void drawWaitingCustomer(String sprite, String recipe, WaitingQueue wQueue) {
         UI.drawImage(sprite + "_DHP.png", wQueueX, wQueueY, custWidth, custHeight); // sprite
         UI.drawImage("thinking_DHP.png", wQueueX-10, wQueueY-50, 100, 100);
-        UI.drawImage(recipe + "_DHP.png", wQueueX, wQueueY-35, 65, 70);
+        UI.drawImage(recipe + "_DHP.png", wQueueX, wQueueY-35, 65, 70); // PLACED POORLY!
+    }
+
+    public void serveWaitingCustomer() {
+        if (orderComplete) {
+            wQueue.waitingDequeue();
+            UI.eraseImage(sprite + "_DHP.png", wQueueX, wQueueY); // sprite
+            UI.eraseImage("thinking_DHP.png", wQueueX-10, wQueueY-50);
+            UI.drawImage("kitchen_DHP.jpeg", 0, 0);
+            
+            /* redraw order queue? */
+            if (cust1 != null) {
+                UI.drawImage(cust1.getSprite() + "_DHP.png", oQueueX, oQueueY, custWidth, custHeight); // sprite
+                UI.drawImage("speaking_DHP.png", oQueueX+140, oQueueY-50, 100, 100);
+                UI.drawImage(cust1.getRecipe() + "_DHP.png", oQueueX+165, oQueueY-35, 65, 70);
+            }
+            if (cust2 != null) {
+                UI.drawImage(cust2.getSprite() + "_DHP.png", oQueueX-custXGap, oQueueY, custWidth, custHeight);
+            }
+            if (cust3 != null) {
+                UI.drawImage(cust3.getSprite() + "_DHP.png", oQueueX-(custXGap*2), oQueueY, custWidth, custHeight);
+            }
+        }
     }
 
     public void recipeStart(String recipe, WaitingQueue wQueue) {
         // definitely not refined yet
         switch (recipe) {
-            case "Parfait" : UI.println("Step 1: Refridgerate yoghurt");
-                step = ("refridgerate");
-                if (step == actual) {
-                    UI.println("Step 2: Chop fruits");
-                    step = ("chop");
-                    actual = "";
-                    if (step == actual) {
-                        UI.println("Step 3: Put together and decorate!");
-                        step = "decorate";
-                        actual = "";
-                        if (step == actual) {
-                            orderComplete = true;
-                        }
-                    }
-                }
+            case "Parfait" :
+                step.add("refridgerate");
+                step.add("chop");
+                step.add("decorate");
                 break;
-            case "Fruit Tart" : UI.println("Step 1: Mix pastry ingredients");
-                step = "mix";
-                if (step.equals(actual)) {
-                    UI.println("Step 2: Bake pastry in oven");
-                    step = "bake";
-                    actual = "";
-                    if (step.equals(actual)) {
-                        UI.println("Step 3: Chop fruits");
-                        step = "chop";
-                        actual = "";
-                        if (step.equals(actual)) {
-                            UI.println("Step 4: Decorate tart");
-                            step = "decorate";
-                            actual = "";
-                            if (step.equals(actual)) {
-                                UI.println("Step 5: Refridgerate");
-                                step = "refridgerate";
-                                actual = "";
-                                if (step.equals(actual)) {
-                                    orderComplete = true;
-                                }
-                            }
-                        }
-                    }
-                }
+            case "Fruit Tart" :
+                step.add("mix");
+                step.add("oven");
+                step.add("chop");
+                step.add("decorate");
+                step.add("refridgerate");
                 break;
-
+            case "Cinnamon Roll":
+                step.add("mix");
+                step.add("chop");
+                step.add("oven");
+                break;
+            case "Cake":
+                step.add("mix");
+                step.add("oven");
+                step.add("decorate");
+                break;
+            case "Ube Cupcake":
+                step.add("mix");
+                step.add("oven");
+                step.add("decorate");
+                break;
+            case "Coffee Jelly":
+                step.add("mix");
+                step.add("refridgerate");
+                step.add("decorate");
+                break;
+            case "Melon Float":
+                step.add("mix");
+                step.add("refridgerate");
+                step.add("decorate");
+                break;
         }
     }
 
@@ -311,6 +326,13 @@ public class mainECSver
         UI.println("Chopping...");
         UI.sleep(5000);
         UI.println("Done!");
+        if (step.size() != 0) {
+            step.remove(0);
+        }
+        if (step.size() == 0) {
+            orderComplete = true;
+            UI.println("Order complete!");
+        }
     }
 
     public void mix (String recipe) {
@@ -318,7 +340,13 @@ public class mainECSver
         UI.println("Mixing...");
         UI.sleep(5000);
         UI.println("Done!");
-        
+        if (step.size() != 0) {
+            step.remove(0);
+        }
+        if (step.size() == 0) {
+            orderComplete = true;
+            UI.println("Order complete!");
+        }
     }
 
     public void oven (String recipe) {
@@ -326,6 +354,13 @@ public class mainECSver
         UI.println("Baking...");
         UI.sleep(5000);
         UI.println("Done!");
+        if (step.size() != 0) {
+            step.remove(0);
+        }
+        if (step.size() == 0) {
+            orderComplete = true;
+            UI.println("Order complete!");
+        }
     }
 
     public void refridgerate (String recipe) {
@@ -333,6 +368,13 @@ public class mainECSver
         UI.println("Refridgerating...");
         UI.sleep(5000);
         UI.println("Done!");
+        if (step.size() != 0) {
+            step.remove(0);
+        }
+        if (step.size() == 0) {
+            orderComplete = true;
+            UI.println("Order complete!");
+        }
     }
 
     public void decorate (String recipe) {
@@ -340,6 +382,13 @@ public class mainECSver
         UI.println("Decorating...");
         UI.sleep(5000);
         UI.println("Done!");
+        if (step.size() != 0) {
+            step.remove(0);
+        }
+        if (step.size() == 0) {
+            orderComplete = true;
+            UI.println("Order complete!");
+        }
     }
 
 }
