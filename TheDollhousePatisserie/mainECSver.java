@@ -8,7 +8,7 @@
  * Cannot move to next step/method for recipes...
  *
  * @author Kanya Farley
- * @version 26/6
+ * @version 2/7
  */
 import java.util.Random;
 import ecs100.*;
@@ -63,7 +63,6 @@ public class mainECSver
 
         while (active) {
             addOrder(oQueue);
-
         }
 
     }
@@ -182,12 +181,21 @@ public class mainECSver
             cust1 = new Customer(sprite, recipe);
         } else if (oQueue.getSize() == 0) {
             UI.drawImage(sprite + "_DHP.png", oQueueX-custXGap, oQueueY, custWidth, custHeight);
+            UI.drawImage("speaking_DHP.png", oQueueX+140-custXGap, oQueueY-50, 100, 100);
+            UI.drawImage(recipe + "_DHP.png", oQueueX+165-custXGap, oQueueY-35, 65, 70);
+            UI.drawImage("speakingoverlay_DHP.png", oQueueX+140-custXGap, oQueueY-50, 100, 100);
             cust2 = new Customer(sprite, recipe);
         } else if (oQueue.getSize() == 1) {
             UI.drawImage(sprite + "_DHP.png", oQueueX-(custXGap*2), oQueueY, custWidth, custHeight);
+            UI.drawImage("speaking_DHP.png", oQueueX+140-(custXGap*2), oQueueY-50, 100, 100);
+            UI.drawImage(recipe + "_DHP.png", oQueueX+165-(custXGap*2), oQueueY-35, 65, 70);
+            UI.drawImage("speakingoverlay_DHP.png", oQueueX+140-(custXGap*2), oQueueY-50, 100, 100);
             cust3 = new Customer(sprite, recipe);
         } else if (oQueue.getSize() == 2) {
             UI.drawImage(sprite + "_DHP.png", oQueueX-(custXGap*3), oQueueY, custWidth, custHeight);
+            UI.drawImage("speaking_DHP.png", oQueueX+140-(custXGap*3), oQueueY-50, 100, 100);
+            UI.drawImage(recipe + "_DHP.png", oQueueX+165-(custXGap*3), oQueueY-35, 65, 70);
+            UI.drawImage("speakingoverlay_DHP.png", oQueueX+140-(custXGap*3), oQueueY-50, 100, 100);
             cust4 = new Customer(sprite, recipe);
         }
     }
@@ -240,9 +248,15 @@ public class mainECSver
         }
         if (cust2 != null) {
             UI.drawImage(cust2.getSprite() + "_DHP.png", oQueueX-custXGap, oQueueY, custWidth, custHeight);
+            UI.drawImage("speaking_DHP.png", oQueueX+140-custXGap, oQueueY-50, 100, 100);
+            UI.drawImage(cust2.getRecipe() + "_DHP.png", oQueueX+165-custXGap, oQueueY-35, 65, 70);
+            UI.drawImage("speakingoverlay_DHP.png", oQueueX+140-custXGap, oQueueY-50, 100, 100);
         }
         if (cust3 != null) {
             UI.drawImage(cust3.getSprite() + "_DHP.png", oQueueX-(custXGap*2), oQueueY, custWidth, custHeight);
+            UI.drawImage("speaking_DHP.png", oQueueX+140-(custXGap*2), oQueueY-50, 100, 100);
+            UI.drawImage(cust2.getRecipe() + "_DHP.png", oQueueX+165-(custXGap*2), oQueueY-35, 65, 70);
+            UI.drawImage("speakingoverlay_DHP.png", oQueueX+140-(custXGap*2), oQueueY-50, 100, 100);
         }
 
         orderComplete = false;
@@ -320,19 +334,22 @@ public class mainECSver
                 break;
         }
     }
+    
+    public void stepCheck() {
+        if (step.size() != 0) {
+            step.remove(0);
+        } else if (step.size() == 0) {
+            orderComplete = true;
+            UI.println("Order complete!");
+        }
+    }
 
     public void chop (String recipe) {
         /*placeholder*/
         UI.println("Chopping...");
         UI.sleep(5000);
         UI.println("Done!");
-        if (step.size() != 0) {
-            step.remove(0);
-        }
-        if (step.size() == 0) {
-            orderComplete = true;
-            UI.println("Order complete!");
-        }
+        stepCheck();
     }
 
     public void mix (String recipe) {
@@ -340,13 +357,7 @@ public class mainECSver
         UI.println("Mixing...");
         UI.sleep(5000);
         UI.println("Done!");
-        if (step.size() != 0) {
-            step.remove(0);
-        }
-        if (step.size() == 0) {
-            orderComplete = true;
-            UI.println("Order complete!");
-        }
+        stepCheck();
     }
 
     public void oven (String recipe) {
@@ -354,13 +365,7 @@ public class mainECSver
         UI.println("Baking...");
         UI.sleep(5000);
         UI.println("Done!");
-        if (step.size() != 0) {
-            step.remove(0);
-        }
-        if (step.size() == 0) {
-            orderComplete = true;
-            UI.println("Order complete!");
-        }
+        stepCheck();
     }
 
     public void refridgerate (String recipe) {
@@ -368,13 +373,7 @@ public class mainECSver
         UI.println("Refridgerating...");
         UI.sleep(5000);
         UI.println("Done!");
-        if (step.size() != 0) {
-            step.remove(0);
-        }
-        if (step.size() == 0) {
-            orderComplete = true;
-            UI.println("Order complete!");
-        }
+        stepCheck();
     }
 
     public void decorate (String recipe) {
@@ -382,13 +381,7 @@ public class mainECSver
         UI.println("Decorating...");
         UI.sleep(5000);
         UI.println("Done!");
-        if (step.size() != 0) {
-            step.remove(0);
-        }
-        if (step.size() == 0) {
-            orderComplete = true;
-            UI.println("Order complete!");
-        }
+        stepCheck();
     }
 
 }
