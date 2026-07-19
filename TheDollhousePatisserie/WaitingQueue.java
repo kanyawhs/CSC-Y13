@@ -56,7 +56,7 @@ public class WaitingQueue
         return("");
     }
     
-    public Customer getFront() {
+    public Customer getWFront() {
         return this.front;
     }
 }

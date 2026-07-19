@@ -79,7 +79,7 @@ public class mainECSver
                     if (this.active && releasedX >=oQueueX+140 && releasedX <= oQueueX+240 && releasedY >= oQueueY-50 && releasedY <= oQueueY+50 && !oQueue.orderQueueEmpty() && wQueue.waitingQueueEmpty()) {
                         wQueue.waitingEnqueue(orderTaken(oQueue));
                         if (!wQueue.waitingQueueEmpty()) {
-                            drawWaitingCustomer(wQueue.getFront().getSprite(), wQueue.getFront().getRecipe(), wQueue);
+                            drawWaitingCustomer(wQueue.getWFront().getSprite(), wQueue.getWFront().getRecipe(), wQueue);
 
                         }
                     } else if (releasedX >=oQueueX+140 && releasedX <= oQueueX+240 && releasedY >= oQueueY && releasedY <= oQueueY+100 && orderComplete == false) {
@@ -94,7 +94,7 @@ public class mainECSver
                     if (!wQueue.waitingQueueEmpty() && releasedX >= 70 && releasedX <= 220 && releasedY >= 20 && releasedY <= 240) {
                         actual = "refridgerate";
                         if (actual == step.get(0)) {
-                            refridgerate(wQueue.getFront().getRecipe());
+                            refridgerate(wQueue.getWFront().getRecipe());
                         } else {
                             UI.println("Wrong step!");
                             UI.println("Required step: " + step);
@@ -104,7 +104,7 @@ public class mainECSver
                     if (!wQueue.waitingQueueEmpty() && releasedX >= 268 && releasedX <= 318 && releasedY >= 90 && releasedY <= 190) {
                         actual = "chop";
                         if (actual == step.get(0)) {
-                            chop(wQueue.getFront().getRecipe());
+                            chop(wQueue.getWFront().getRecipe());
                         } else {
                             UI.println("Wrong step!");
                             UI.println("Required step: " + step);
@@ -114,7 +114,7 @@ public class mainECSver
                     if (!wQueue.waitingQueueEmpty() && releasedX >= 392 && releasedX <= 482 && releasedY >= 68 && releasedY <= 143) {
                         actual = "mix";
                         if (actual == step.get(0)) {
-                            mix(wQueue.getFront().getRecipe());
+                            mix(wQueue.getWFront().getRecipe());
                         } else {
                             UI.println("Wrong step!");
                             UI.println("Required step: " + step);
@@ -124,7 +124,7 @@ public class mainECSver
                     if (!wQueue.waitingQueueEmpty() && releasedX >= 516 && releasedX <=684 && releasedY >= 85 && releasedY <= 250) {
                         actual = "oven";
                         if (actual == step.get(0)) {
-                            oven(wQueue.getFront().getRecipe());
+                            oven(wQueue.getWFront().getRecipe());
                         } else {
                             UI.println("Wrong step!");
                             UI.println("Required step: " + step);
@@ -134,7 +134,7 @@ public class mainECSver
                     if (!wQueue.waitingQueueEmpty() && releasedX >= 700 && releasedX <= 770 && releasedY >= 94 && releasedY <= 159) {
                         actual = "decorate";
                         if (actual == step.get(0)) {
-                            decorate(wQueue.getFront().getRecipe());
+                            decorate(wQueue.getWFront().getRecipe());
                         } else {
                             UI.println("Wrong step!");
                             UI.println("Required step: " + step);
@@ -353,6 +353,11 @@ public class mainECSver
     }
 
     public void mix (String recipe) {
+        if (recipe == "Melon Float") {
+            UI.drawImage("melon_mix1_DHP.png", 200, 200, 600, 321);
+            
+        }
+        
         /*placeholder*/
         UI.println("Mixing...");
         UI.sleep(5000);

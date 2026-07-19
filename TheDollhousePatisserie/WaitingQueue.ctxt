@@ -1,14 +1,13 @@
 #BlueJ class context
+#Mon Jul 20 10:03:40 NZST 2026
 comment0.target=WaitingQueue
-comment1.params=
 comment1.target=WaitingQueue()
-comment1.text=\r\n\ Constructor\ for\ objects\ of\ class\ WaitingQueue\r\n
+comment1.text=\r\n Constructor for objects of class WaitingQueue\r\n
 comment2.params=customer
-comment2.target=void\ firstInWaitingQueue(Customer)
-comment3.params=
-comment3.target=boolean\ waitingQueueEmpty()
+comment2.target=void firstInWaitingQueue(Customer)
+comment3.target=boolean waitingQueueEmpty()
 comment4.params=newCust
-comment4.target=void\ waitingEnqueue(Customer)
-comment5.params=
-comment5.target=java.lang.String\ waitingDequeue()
-numComments=6
+comment4.target=void waitingEnqueue(Customer)
+comment5.target=java.lang.String waitingDequeue()
+comment6.target=Customer getWFront()
+numComments=7
