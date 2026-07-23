@@ -276,12 +276,12 @@ public class mainECSver
             UI.eraseImage(sprite + "_DHP.png", wQueueX, wQueueY); // sprite
             UI.eraseImage("thinking_DHP.png", wQueueX-10, wQueueY-50);
             UI.drawImage("kitchen_DHP.jpeg", 0, 0);
-            
+
             /* redraw order queue? */
             if (cust1 != null) {
                 UI.drawImage(cust1.getSprite() + "_DHP.png", oQueueX, oQueueY, custWidth, custHeight); // sprite
                 UI.drawImage("speaking_DHP.png", oQueueX+140, oQueueY-50, 100, 100);
-                UI.drawImage(cust1.getRecipe() + "_DHP.png", oQueueX+165, oQueueY-35, 65, 70);
+                UI.drawImage(cust1.getRecipe() + "_DHP.png", oQueueX+175, oQueueY-35, 65, 70);
             }
             if (cust2 != null) {
                 UI.drawImage(cust2.getSprite() + "_DHP.png", oQueueX-custXGap, oQueueY, custWidth, custHeight);
@@ -334,7 +334,7 @@ public class mainECSver
                 break;
         }
     }
-    
+
     public void stepCheck() {
         if (step.size() != 0) {
             step.remove(0);
@@ -353,16 +353,27 @@ public class mainECSver
     }
 
     public void mix (String recipe) {
-        if (recipe == "Melon Float") {
-            UI.drawImage("melon_mix1_DHP.png", 200, 200, 600, 321);
-            
+        if (recipe.equals("Melon Float")) {
+            for (int i = 1; i < 6; i++) {
+                UI.drawImage("melon_mix" + i + "_DHP.png", 150, 200, 600, 321);
+                UI.sleep(1000);
+            }
+            UI.println("Done!");
+            for (int i = 1; i < 6; i++) {
+                //UI.eraseImage("melon_mix" + i + "_DHP.png", 150, 200, 600, 321);
+            }
+            stepCheck();
+        } else {
+            for (int i = 1; i < 6; i++) {
+                UI.drawImage("mix" + i + "_DHP.png", 150, 200, 600, 321);
+                UI.sleep(1000);
+            }
+            UI.println("Done!");
+            for (int i = 1; i < 6; i++) {
+                //UI.eraseImage("mix" + i + "_DHP.png", 150, 200, 600, 321);
+            }
+            stepCheck();
         }
-        
-        /*placeholder*/
-        UI.println("Mixing...");
-        UI.sleep(5000);
-        UI.println("Done!");
-        stepCheck();
     }
 
     public void oven (String recipe) {
